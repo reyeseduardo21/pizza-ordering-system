@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Pizzabox.Domain.Abstracts;
+using Pizzabox.Domain.Models;
 
 namespace PizzaBox
 {
@@ -13,11 +15,10 @@ namespace PizzaBox
         private static void Run()
         {
             Console.WriteLine("Welcome to PizzaBox ");
-            var stores = new List<string>()
+            var stores = new List<AStore>()
             {
-                "Store 001",
-                "Store 002",
-                "Store 003"
+                new NewYorkStore(),
+                new ChicagoStore()
             };
 
             foreach (var item in stores)
@@ -26,6 +27,6 @@ namespace PizzaBox
             }
         }
     }
-
-
 }
+
+
