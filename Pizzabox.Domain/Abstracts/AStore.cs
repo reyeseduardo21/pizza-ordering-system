@@ -1,4 +1,4 @@
-namespace Pizzabox.Domain.Abstracts
+namespace PizzaBox.Domain.Abstracts
 {
     public abstract class AStore
     {

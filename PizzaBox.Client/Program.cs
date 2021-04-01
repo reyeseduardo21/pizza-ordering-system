@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using Pizzabox.Domain.Abstracts;
-using Pizzabox.Domain.Models;
+using PizzaBox.Domain.Singletons;
 
 namespace PizzaBox
 {
@@ -15,13 +13,11 @@ namespace PizzaBox
         private static void Run()
         {
             Console.WriteLine("Welcome to PizzaBox ");
-            var stores = new List<AStore>()
-            {
-                new NewYorkStore(),
-                new ChicagoStore()
-            };
 
-            foreach (var item in stores)
+            var storeSingleton = StoreSingleton.Instance();
+            //var s2 = new StoreSingleton();
+
+            foreach (var item in StoreSingleton.Stores)
             {
                 Console.WriteLine(item);
             }

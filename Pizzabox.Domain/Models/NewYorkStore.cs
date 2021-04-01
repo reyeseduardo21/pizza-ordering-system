@@ -1,6 +1,6 @@
-using Pizzabox.Domain.Abstracts;
+using PizzaBox.Domain.Abstracts;
 
-namespace Pizzabox.Domain.Models
+namespace PizzaBox.Domain.Models
 {
     public class NewYorkStore : AStore
     {
