@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 
@@ -23,6 +25,23 @@ namespace PizzaBox.Domain.Singletons
                     new NewYorkStore(),
                     new ChicagoStore()
                 };
+        }
+
+        public void WriteToFile()
+        {
+            // access to path
+            string path = @"store.xml"; //@ causes it to be read as a literal string
+            // open file
+            StreamWriter writer = new StreamWriter(path);
+            // access to object
+            var stores = Stores;
+            // Class definition (structure)
+            XmlSerializer xml = new XmlSerializer(typeof(List<AStore>));
+            // serialize (convert to markup) to xml
+            xml.Serialize(writer, stores);
+            //write to file
+            // close file
+
         }
 
         public static StoreSingleton Instance()

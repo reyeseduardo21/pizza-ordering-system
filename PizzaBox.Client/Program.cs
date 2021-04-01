@@ -17,10 +17,19 @@ namespace PizzaBox
             var storeSingleton = StoreSingleton.Instance();
             //var s2 = new StoreSingleton();
 
+            var PizzaSingletons = PizzaSingleton.Instance();
+
             foreach (var item in StoreSingleton.Stores)
             {
                 Console.WriteLine(item);
             }
+
+            foreach (var item in PizzaSingleton.Pizzas)
+            {
+                Console.WriteLine(item);
+            }
+
+            storeSingleton.WriteToFile();
         }
     }
 }
