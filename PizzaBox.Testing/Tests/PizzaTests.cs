@@ -3,17 +3,24 @@ using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PizzaTests
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Fact]
         public void Test_PizzaCrust()
         {
-            //arrange
+            // arrange
             var sut = new VeganPizza();
 
-            //act
+            // act
             var actual = sut.Crust;
 
-            //assert
+            // assert
             Assert.Null(actual);
         }
     }

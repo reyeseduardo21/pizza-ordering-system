@@ -1,21 +1,26 @@
-using Xunit;
 using PizzaBox.Domain.Models;
-
+using Xunit;
 
 namespace PizzaBox.Testing.Tests
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class StoreTests
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [Fact]
         public void Test_StoreName()
         {
-            // arrange, gather what we want to test
+            // arrange
             var sut = new ChicagoStore();
 
-            //act, run whatever needs to be run to get an actual value
+            // act
             var actual = sut.Name;
 
-            //assert, what we are testing
+            // assert
             Assert.True(actual == "ChicagoStore");
         }
     }

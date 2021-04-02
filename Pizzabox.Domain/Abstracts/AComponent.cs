@@ -7,11 +7,9 @@ namespace PizzaBox.Domain.Abstracts
     {
         //field
         //public string Name;
-        public Crust Crust { get; set; }
+        public string Name { get; set; }
 
-        public Size Size { get; set; }
-
-        public List<string> Toppings { get; set; }
+        public decimal Price { get; set; }
 
 
     }
