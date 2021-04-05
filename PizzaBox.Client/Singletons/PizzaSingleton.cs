@@ -35,13 +35,13 @@ namespace PizzaBox.Client.Singletons
         /// </summary>
         private PizzaSingleton()
         {
-            Pizzas = new List<APizza>
-            {
-                new CheesePizza(),
-                new MeatPizza(),
-                new PepperoniPizza(),
-                new VeganPizza()
-            };
+            // Pizzas = new List<APizza>
+            // {
+            //     new CheesePizza(),
+            //     new MeatPizza(),
+            //     new PepperoniPizza(),
+            //     new VeganPizza()
+            // };
             //_fileRepository.WriteToPizzaFile(Pizzas);
             Pizzas = _fileRepository.ReadFromFile<APizza>(_path);
         }
