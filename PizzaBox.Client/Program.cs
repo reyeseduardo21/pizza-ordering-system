@@ -38,8 +38,11 @@ namespace PizzaBox.Client
             order.Store = SelectStore();
             order.Pizza = SelectPizza();
             order.Pizza.Size = SelectSize();
+            order.Pizza.PizzaPrice = CalculatePrice(order.Pizza, order.Pizza.Size);
+
 
             DisplayOrder(order.Pizza, order.Pizza.Size, order.Pizza.PizzaPrice);
+
 
             order.Save();
         }
@@ -47,9 +50,9 @@ namespace PizzaBox.Client
         /// <summary>
         /// 
         /// </summary>
-        private static void DisplayOrder(APizza pizza, string size, double price)
+        private static void DisplayOrder(APizza pizza, string size, double CurrentPrice)
         {
-            Console.WriteLine($"Your order is: {size} {pizza} and the total is {price}");
+            Console.WriteLine($"Your order is: {size} {pizza} and the total is {CurrentPrice}");
         }
 
         /// <summary>
@@ -189,7 +192,7 @@ namespace PizzaBox.Client
 
             var pizza = _pizzaSingleton.Pizzas[input - 1];
 
-
+            pizza.addPrice();
 
             return pizza;
         }
@@ -240,6 +243,7 @@ namespace PizzaBox.Client
             } while (number == false);
 
 
+
             var size = _sizeSingleton.Size[input - 1];
 
 
@@ -247,7 +251,30 @@ namespace PizzaBox.Client
 
         }
 
+        private static double CalculatePrice(APizza pizza, string size)
+        {
+            double BasePrice = pizza.PizzaPrice;
+            double FinalPrice;
+            switch (size)
+            {
+                case "Small":
+                    FinalPrice = BasePrice;
+                    break;
+                case "Medium":
+                    FinalPrice = BasePrice + 3;
+                    break;
+                case "Large":
+                    FinalPrice = BasePrice + 5;
+                    break;
+                default:
+                    Console.WriteLine("Default case");
+                    FinalPrice = 5.99;
+                    break;
 
+            }
+
+            return FinalPrice;
+        }
 
     }
 }

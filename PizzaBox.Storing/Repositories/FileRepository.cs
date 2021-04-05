@@ -30,11 +30,11 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
-        public bool WriteToFile(List<APizza> pizzas)
+        public bool WriteToPizzaFile(List<APizza> pizzas)
         {
             try
             {
-                var path = @"Completed_Orders.xml";
+                var path = @"Pizzas.xml";
                 var writer = new StreamWriter(path);
                 var xml = new XmlSerializer(typeof(List<APizza>));
 

@@ -4,6 +4,11 @@ namespace PizzaBox.Domain.Models
 {
     public class PepperoniPizza : APizza
     {
+
+        public PepperoniPizza()
+        {
+            Name = "PepperoniPizza";
+        }
         public override void AddCrust()
         {
             Crust = null;
@@ -22,7 +27,7 @@ namespace PizzaBox.Domain.Models
 
         public override void addPrice()
         {
-            PizzaPrice.Price = 10.00;
+            PizzaPrice = 6.99;
 
         }
     }

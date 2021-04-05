@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Domain.Abstracts
@@ -6,13 +7,21 @@ namespace PizzaBox.Domain.Abstracts
     /// <summary>
     /// 
     /// </summary>
+    [XmlInclude(typeof(CheesePizza))]
+    [XmlInclude(typeof(MeatPizza))]
+    [XmlInclude(typeof(PepperoniPizza))]
+    [XmlInclude(typeof(VeganPizza))]
+
     public abstract class APizza
     {
+        //XmlIgnoreAttribute();
         public Crust Crust { get; set; }
         public string Size { get; set; }
         public List<Toppings> Toppings { get; set; }
 
-        public Price PizzaPrice { get; set; }
+        public string Name { get; set; }
+
+        public double PizzaPrice { get; set; }
 
         protected APizza()
         {
@@ -41,6 +50,11 @@ namespace PizzaBox.Domain.Abstracts
         public abstract void AddToppings();
 
         public abstract void addPrice();
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
 
     }
 }
