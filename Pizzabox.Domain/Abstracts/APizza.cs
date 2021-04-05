@@ -9,8 +9,10 @@ namespace PizzaBox.Domain.Abstracts
     public abstract class APizza
     {
         public Crust Crust { get; set; }
-        public Size Size { get; set; }
+        public string Size { get; set; }
         public List<Toppings> Toppings { get; set; }
+
+        public Price PizzaPrice { get; set; }
 
         protected APizza()
         {
@@ -33,9 +35,12 @@ namespace PizzaBox.Domain.Abstracts
 
         public virtual void AddSize()
         {
-            Size = new Size();
+            Size = null;
         }
 
         public abstract void AddToppings();
+
+        public abstract void addPrice();
+
     }
 }

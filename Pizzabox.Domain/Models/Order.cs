@@ -11,6 +11,10 @@ namespace PizzaBox.Domain.Models
         public Customer Customer { get; set; }
         public APizza Pizza { get; set; }
 
+        public double Cost { get; set; }
+
+        public string Size { get; set; }
+
         /// <summary>
         /// 
         /// </summary>

@@ -30,6 +30,28 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
+        public bool WriteToFile(List<APizza> pizzas)
+        {
+            try
+            {
+                var path = @"Completed_Orders.xml";
+                var writer = new StreamWriter(path);
+                var xml = new XmlSerializer(typeof(List<APizza>));
+
+                xml.Serialize(writer, pizzas);
+
+                return true;
+            }
+            // catch (FileNotFoundException e)
+            // {
+            //   throw new Exception("you have wrong file", e);
+            // }
+            catch
+            {
+                return false;
+            }
+        }
+
         public List<T> ReadFromFile<T>(string path) where T : class
         {
             var reader = new StreamReader(path);

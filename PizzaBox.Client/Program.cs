@@ -13,6 +13,8 @@ namespace PizzaBox.Client
         private static readonly StoreSingleton _storeSingleton = StoreSingleton.Instance;
         private static readonly PizzaSingleton _pizzaSingleton = PizzaSingleton.Instance;
 
+        private static readonly SizeSingleton _sizeSingleton = SizeSingleton.Instance;
+
         /// <summary>
         /// 
         /// </summary>
@@ -35,6 +37,9 @@ namespace PizzaBox.Client
             order.Customer = new Customer();
             order.Store = SelectStore();
             order.Pizza = SelectPizza();
+            order.Pizza.Size = SelectSize();
+
+            DisplayOrder(order.Pizza, order.Pizza.Size, order.Pizza.PizzaPrice);
 
             order.Save();
         }
@@ -42,9 +47,9 @@ namespace PizzaBox.Client
         /// <summary>
         /// 
         /// </summary>
-        private static void DisplayOrder(APizza pizza)
+        private static void DisplayOrder(APizza pizza, string size, double price)
         {
-            Console.WriteLine($"Your order is: {pizza}");
+            Console.WriteLine($"Your order is: {size} {pizza} and the total is {price}");
         }
 
         /// <summary>
@@ -73,18 +78,14 @@ namespace PizzaBox.Client
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private static APizza SelectPizza()
+        private static void DisplayPizzaSize()
         {
-            var input = int.Parse(Console.ReadLine());
-            var pizza = _pizzaSingleton.Pizzas[input - 1];
+            var index = 0;
 
-            DisplayOrder(pizza);
-
-            return pizza;
+            foreach (var item in _sizeSingleton.Size)
+            {
+                Console.WriteLine($"{++index} - {item}");
+            }
         }
 
         /// <summary>
@@ -93,11 +94,160 @@ namespace PizzaBox.Client
         /// <returns></returns>
         private static AStore SelectStore()
         {
-            var input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
+            Boolean number = false;
+            var PizzaStoreNumber = Console.ReadLine();
+            int input = 2;
+            int LastIndex = _storeSingleton.Stores.Count;
+            do
+            {
+                try
+                {
+                    input = int.Parse(PizzaStoreNumber); // be careful (think execpetion/error handling)
+                    do
+                    {
+                        if (input <= LastIndex)
+                        {
+                            number = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter the number of the store.");
+                            PizzaStoreNumber = Console.ReadLine();
+                            input = int.Parse(PizzaStoreNumber);
+                            if (input <= LastIndex)
+                            {
+                                number = true;
+                            }
+                            number = false;
+                        }
+                    } while (number == false);
 
-            DisplayPizzaMenu();
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Please enter the number of the store.", e);
+                    PizzaStoreNumber = Console.ReadLine();
+                }
+
+            } while (number == false);
+
+
+
 
             return _storeSingleton.Stores[input - 1];
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private static APizza SelectPizza()
+        {
+            DisplayPizzaMenu();
+
+            int input = 1;
+
+            int LastIndex = _pizzaSingleton.Pizzas.Count;
+            Boolean number = false;
+            var PizzaNumber = "null";
+
+            do
+            {
+                try
+                {
+                    input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
+                    do
+                    {
+                        if (input <= LastIndex)
+                        {
+                            number = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter the correct pizza number.");
+                            DisplayPizzaMenu();
+                            PizzaNumber = Console.ReadLine();
+                            input = int.Parse(PizzaNumber);
+                            if (input <= LastIndex)
+                            {
+                                number = true;
+                            }
+                            number = false;
+                        }
+                    } while (number == false);
+
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Please enter the correct pizza number.", e);
+                    DisplayPizzaMenu();
+                    PizzaNumber = Console.ReadLine();
+                }
+
+            } while (number == false);
+
+            var pizza = _pizzaSingleton.Pizzas[input - 1];
+
+
+
+            return pizza;
+        }
+
+        private static string SelectSize()
+        {
+            DisplayPizzaSize();
+            int input = 1;
+
+            int LastIndex = _sizeSingleton.Size.Count;
+            Boolean number = false;
+            var SizeNumber = "null";
+
+            do
+            {
+                try
+                {
+                    input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
+                    do
+                    {
+                        if (input <= LastIndex)
+                        {
+                            number = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter the correct size number.");
+                            DisplayPizzaSize();
+                            SizeNumber = Console.ReadLine();
+                            input = int.Parse(SizeNumber);
+                            if (input <= LastIndex)
+                            {
+                                number = true;
+                            }
+                            number = false;
+                        }
+                    } while (number == false);
+
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Please enter the correct size number.", e);
+                    DisplayPizzaSize();
+                    SizeNumber = Console.ReadLine();
+                }
+
+            } while (number == false);
+
+
+            var size = _sizeSingleton.Size[input - 1];
+
+
+            return size;
+
+        }
+
+
+
     }
 }

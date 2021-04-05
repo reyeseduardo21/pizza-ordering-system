@@ -2,7 +2,7 @@ using PizzaBox.Domain.Abstracts;
 
 namespace PizzaBox.Domain.Models
 {
-    public class VeganPizza : APizza
+    public class CheesePizza : APizza
     {
         public override void AddCrust()
         {
@@ -22,10 +22,9 @@ namespace PizzaBox.Domain.Models
 
         public override void addPrice()
         {
-            PizzaPrice.Price = 11.00;
+            PizzaPrice.Price = 9.00;
 
         }
 
     }
-
 }

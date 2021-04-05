@@ -7,10 +7,10 @@
     <Name>ChicagoStore</Name>
   </AStore>
   <AStore xsi:type="NewYorkStore">
-    <Name>NewYorkStore</Name>
+    <Name>TexasStore</Name>
   </AStore>
   <AStore xsi:type="ChicagoStore">
-    <Name>ChicagoStore</Name>
+    <Name>NewMexicoStore</Name>
   </AStore>
   
 </ArrayOfAStore>

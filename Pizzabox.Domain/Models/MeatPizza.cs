@@ -20,5 +20,10 @@ namespace PizzaBox.Domain.Models
             Toppings.AddRange(new Toppings[] { new Toppings(), new Toppings() });
         }
 
+        public override void addPrice()
+        {
+            PizzaPrice.Price = 12.00;
+
+        }
     }
 }
