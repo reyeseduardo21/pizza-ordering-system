@@ -33,7 +33,6 @@ namespace PizzaBox.Client
             var order = new Order();
             bool AddMore = false;
             bool CorrectInput = false;
-            int OrderLimit = 250;
             var input = "";
 
 
@@ -52,10 +51,32 @@ namespace PizzaBox.Client
             {
                 order.ListOfPizzas.Add(SelectPizza());
                 order.ListOfSizes.Add(SelectSize());
-                order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
+
+
+
+
+                //Console.WriteLine("Pizza and price saved");
+                // foreach (APizza item in order.ListOfPizzas)
+                // {
+                //     Console.WriteLine($"{item}");
+                // }
+
+                // foreach (string item in order.ListOfSizes)
+                // {
+                //     Console.WriteLine($"{item}");
+                // }
+
+                // foreach (double item in order.ListOfPrices)
+                // {
+                //     Console.WriteLine($"{item}");
+                // }
+
+                //Console.WriteLine(order.Cost);
 
                 Console.WriteLine("Would you like to add more to this order? (Y/N)");
                 input = Console.ReadLine();
+
+
 
                 do
                 {
@@ -78,7 +99,24 @@ namespace PizzaBox.Client
                     AddMore = true;
                 }
 
-            } while (AddMore == false || !(order.Cost <= OrderLimit));
+            } while (AddMore == false);
+
+            order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
+
+            if (order.Cost > 250)
+            {
+                Console.WriteLine("The limit of price is greater than 250, removing the items that were added last until order is $250 or less");
+                do
+                {
+                    order.ListOfPizzas.RemoveAt(order.ListOfPizzas.Count - 1);
+                    order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
+
+                } while (order.Cost > 250);
+
+
+            }
+
+            order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
 
 
             DisplayOrder(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices, order.Cost);
@@ -90,13 +128,14 @@ namespace PizzaBox.Client
         /// <summary>
         /// 
         /// </summary>
-        private static void DisplayOrder(List<string> ListPizza, List<string> ListSize, List<double> ListPrice, double CurrentPrice)
+        private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<double> ListPrice, double CurrentPrice)
         {
             Console.WriteLine("\nYour order is: ");
-            foreach (string item in ListPizza)
+            int i = 0;
+            foreach (APizza item in ListPizza)
             {
-                Console.WriteLine($"\n{ListSize[ListSize.IndexOf(item)]} ");
-                Console.Write($"{item} for ${ListPrice[ListSize.IndexOf(item)]}");
+                Console.WriteLine($"\n{ListSize[i]} {item} for ${ListPrice[i]}");
+                i++;
 
             }
             Console.WriteLine($"\nYour total is: {CurrentPrice}");
@@ -191,7 +230,7 @@ namespace PizzaBox.Client
         /// 
         /// </summary>
         /// <returns></returns>
-        private static string SelectPizza()
+        private static APizza SelectPizza()
         {
             DisplayPizzaMenu();
 
@@ -243,7 +282,7 @@ namespace PizzaBox.Client
 
             pizza.addPrice();
 
-            return pizza.ToString();
+            return pizza;
         }
 
         private static string SelectSize()
@@ -272,7 +311,7 @@ namespace PizzaBox.Client
                             DisplayPizzaSize();
                             SizeNumber = Console.ReadLine();
                             input = int.Parse(SizeNumber);
-                            if (input <= LastIndex)
+                            if (input <= LastIndex && input > 0)
                             {
                                 number = true;
                             }
@@ -304,39 +343,45 @@ namespace PizzaBox.Client
         {
             double BasePrice = 0;
             double FinalPrice = 0;
+            double CostPrice = 0;
+            int i = 0;
 
             foreach (APizza item in ListPizza)
             {
                 BasePrice = item.PizzaPrice;
-                switch (ListSize[ListPizza.IndexOf(item)])
+                switch (ListSize[i])
                 {
                     case "Small":
                         FinalPrice = BasePrice;
+                        //Console.WriteLine(FinalPrice);
                         ListPrice.Add(FinalPrice);
                         break;
                     case "Medium":
                         FinalPrice = BasePrice + 3;
+                        //Console.WriteLine(FinalPrice);
                         ListPrice.Add(FinalPrice);
                         break;
                     case "Large":
                         FinalPrice = BasePrice + 5;
+                        //Console.WriteLine(FinalPrice);
                         ListPrice.Add(FinalPrice);
                         break;
                     default:
-                        Console.WriteLine("Default case");
+                        //Console.WriteLine("Default case");
                         FinalPrice = BasePrice;
                         break;
-
                 }
+                i++;
             }
 
-            foreach (double Price in ListPrice)
+            foreach (double price in ListPrice)
             {
-                FinalPrice += Price;
+                CostPrice += price;
             }
 
-            return FinalPrice;
-        }
+            return CostPrice;
 
+        }
     }
 }
+
