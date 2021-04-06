@@ -6,6 +6,7 @@ namespace PizzaBox.Domain.Models
     {
 
 
+
         public CheesePizza()
         {
             Name = "CheesePizza";

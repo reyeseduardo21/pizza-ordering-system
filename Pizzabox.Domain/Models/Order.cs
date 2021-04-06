@@ -1,4 +1,5 @@
 using PizzaBox.Domain.Abstracts;
+using System.Collections.Generic;
 
 namespace PizzaBox.Domain.Models
 {
@@ -13,7 +14,11 @@ namespace PizzaBox.Domain.Models
 
         public double Cost { get; set; }
 
-        public string Size { get; set; }
+        public List<string> ListOfSizes { get; set; }
+
+        public List<APizza> ListOfPizzas { get; set; }
+
+        public List<double> ListOfPrices { get; set; }
 
         /// <summary>
         /// 
