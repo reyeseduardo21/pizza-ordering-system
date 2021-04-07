@@ -27,7 +27,7 @@ namespace PizzaBox.Domain.Models
 
         public override void addPrice()
         {
-            PizzaPrice = 6.99;
+
 
         }
     }
