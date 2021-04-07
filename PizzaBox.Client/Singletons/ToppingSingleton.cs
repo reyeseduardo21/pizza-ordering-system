@@ -9,21 +9,21 @@ namespace PizzaBox.Client.Singletons
     /// <summary>
     /// xml.Ignore
     /// </summary>
-    public class PizzaSingleton
+    public class ToppingSingleton
     {
-        private static PizzaSingleton _instance;
+        private static ToppingSingleton _instance;
 
         private static readonly FileRepository _fileRepository = new FileRepository();
-        private const string _path = @"Pizzas.xml";
+        //private const string _path = @"Pizzas.xml";
 
-        public List<APizza> Pizzas { get; set; }
-        public static PizzaSingleton Instance
+        public List<string> Toppings { get; set; }
+        public static ToppingSingleton Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new PizzaSingleton();
+                    _instance = new ToppingSingleton();
                 }
 
                 return _instance;
@@ -33,17 +33,17 @@ namespace PizzaBox.Client.Singletons
         /// <summary>
         /// 
         /// </summary>
-        private PizzaSingleton()
+        private ToppingSingleton()
         {
             // Pizzas = new List<APizza>
-            //  {
-            //      new CheesePizza(),
-            //      new MeatPizza(),
-            //      new PepperoniPizza(),
-            //      new VeganPizza()
-            //  };
-            // _fileRepository.WriteToPizzaFile(Pizzas);
-            Pizzas = _fileRepository.ReadFromFile<APizza>(_path);
+            // {
+            //     new CheesePizza(),
+            //     new MeatPizza(),
+            //     new PepperoniPizza(),
+            //     new VeganPizza()
+            // };
+            //_fileRepository.WriteToPizzaFile(Pizzas);
+            //Pizzas = _fileRepository.ReadFromFile<APizza>(_path);
         }
     }
 }

@@ -12,9 +12,12 @@ namespace PizzaBox.Client
     internal class Program
     {
         private static readonly StoreSingleton _storeSingleton = StoreSingleton.Instance;
+
         private static readonly PizzaSingleton _pizzaSingleton = PizzaSingleton.Instance;
 
         private static readonly SizeSingleton _sizeSingleton = SizeSingleton.Instance;
+
+        private static readonly CrustSingleton _crustSingleton = CrustSingleton.Instance;
 
         /// <summary>
         /// 
@@ -34,6 +37,7 @@ namespace PizzaBox.Client
             bool AddMore = false;
             bool CorrectInput = false;
             var input = "";
+            int PizzaCount = 0;
 
 
 
@@ -45,11 +49,13 @@ namespace PizzaBox.Client
             order.ListOfPizzas = new List<APizza> { };
             order.ListOfSizes = new List<string> { };
             order.ListOfPrices = new List<double> { };
+            order.ListOfCrusts = new List<string> { };
             order.Cost = 0;
 
             do
             {
                 order.ListOfPizzas.Add(SelectPizza());
+                order.ListOfCrusts.Add(SelectCrust());
                 order.ListOfSizes.Add(SelectSize());
 
 
@@ -78,6 +84,7 @@ namespace PizzaBox.Client
 
 
 
+
                 do
                 {
                     if (input.ToLower() == "n" || input.ToLower() == "no" || input.ToLower() == "y" || input.ToLower() == "yes")
@@ -99,7 +106,13 @@ namespace PizzaBox.Client
                     AddMore = true;
                 }
 
-            } while (AddMore == false);
+                PizzaCount += 1;
+                if (PizzaCount == 50)
+                {
+                    Console.WriteLine("Order limit has been reached. You cannot place any more orders.");
+                }
+
+            } while (AddMore == false && PizzaCount != 50);
 
             order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
 
@@ -116,10 +129,10 @@ namespace PizzaBox.Client
 
             }
 
-            order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
+            //order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
 
 
-            DisplayOrder(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices, order.Cost);
+            DisplayOrder(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices, order.Cost, order.ListOfCrusts);
 
 
             order.Save();
@@ -128,17 +141,27 @@ namespace PizzaBox.Client
         /// <summary>
         /// 
         /// </summary>
-        private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<double> ListPrice, double CurrentPrice)
+        private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<double> ListPrice, double CurrentPrice, List<string> ListCrust)
         {
             Console.WriteLine("\nYour order is: ");
             int i = 0;
             foreach (APizza item in ListPizza)
             {
-                Console.WriteLine($"\n{ListSize[i]} {item} for ${ListPrice[i]}");
+                Console.WriteLine($"\n{ListSize[i]} {ListCrust[i]} {item} for ${ListPrice[i]}");
                 i++;
 
             }
-            Console.WriteLine($"\nYour total is: {CurrentPrice}");
+            Console.WriteLine($"\nYour total is: ${CurrentPrice}");
+        }
+
+        private static void DisplayCrustTypes()
+        {
+            var index = 0;
+
+            foreach (var item in _crustSingleton.Crust)
+            {
+                Console.WriteLine($"{++index} - {item}");
+            }
         }
 
         /// <summary>
@@ -280,9 +303,60 @@ namespace PizzaBox.Client
 
             var pizza = _pizzaSingleton.Pizzas[input - 1];
 
-            pizza.addPrice();
-
             return pizza;
+        }
+
+        private static string SelectCrust()
+        {
+            DisplayCrustTypes();
+
+            int input = 1;
+
+            int LastIndex = _crustSingleton.Crust.Count;
+            Boolean number = false;
+            var CrustNumber = "null";
+
+            do
+            {
+                try
+                {
+                    input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
+                    do
+                    {
+                        //check if within index
+                        if (input <= LastIndex)
+                        {
+                            number = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter the correct Crust number.");
+                            DisplayPizzaMenu();
+                            CrustNumber = Console.ReadLine();
+                            input = int.Parse(CrustNumber);
+                            if (input <= LastIndex)
+                            {
+                                number = true;
+                            }
+                            number = false;
+                        }
+                    } while (number == false);
+
+
+                }
+                //check if number was entered
+                catch (Exception e)
+                {
+                    Console.WriteLine("Please enter the correct crust number.", e);
+                    DisplayPizzaMenu();
+                    CrustNumber = Console.ReadLine();
+                }
+
+            } while (number == false);
+
+            var crust = _crustSingleton.Crust[input - 1];
+
+            return crust;
         }
 
         private static string SelectSize()

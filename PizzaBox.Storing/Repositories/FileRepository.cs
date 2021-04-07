@@ -52,6 +52,28 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
+        public bool WriteToCrustFile(List<string> Crust)
+        {
+            try
+            {
+                var path = @"Crusts.xml";
+                var writer = new StreamWriter(path);
+                var xml = new XmlSerializer(typeof(List<string>));
+
+                xml.Serialize(writer, Crust);
+
+                return true;
+            }
+            // catch (FileNotFoundException e)
+            // {
+            //   throw new Exception("you have wrong file", e);
+            // }
+            catch
+            {
+                return false;
+            }
+        }
+
         public List<T> ReadFromFile<T>(string path) where T : class
         {
             var reader = new StreamReader(path);

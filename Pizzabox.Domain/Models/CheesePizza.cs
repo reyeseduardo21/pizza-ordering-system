@@ -12,10 +12,10 @@ namespace PizzaBox.Domain.Models
             Name = "CheesePizza";
         }
 
-        public override void AddCrust()
-        {
-            Crust = null;
-        }
+        // public override void AddCrust()
+        // {
+        //     Crust = null;
+        // }
 
         public override void AddSize()
         {
@@ -25,12 +25,12 @@ namespace PizzaBox.Domain.Models
 
         public override void AddToppings()
         {
-            Toppings.AddRange(new Toppings[] { new Toppings(), new Toppings() });
+            //Toppings.AddRange(new Toppings[] { new Toppings(), new Toppings() });
         }
 
         public override void addPrice()
         {
-            PizzaPrice = 5.99;
+
 
         }
 

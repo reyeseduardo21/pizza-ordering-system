@@ -20,6 +20,8 @@ namespace PizzaBox.Domain.Models
 
         public List<double> ListOfPrices { get; set; }
 
+        public List<string> ListOfCrusts { get; set; }
+
         /// <summary>
         /// 
         /// </summary>

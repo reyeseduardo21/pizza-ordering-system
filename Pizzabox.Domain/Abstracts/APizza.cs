@@ -15,7 +15,7 @@ namespace PizzaBox.Domain.Abstracts
     public abstract class APizza
     {
         //XmlIgnoreAttribute();
-        public Crust Crust { get; set; }
+        public string Crust { get; set; }
         public string Size { get; set; }
         public List<Toppings> Toppings { get; set; }
 
@@ -30,16 +30,16 @@ namespace PizzaBox.Domain.Abstracts
 
         private void Factory()
         {
-            Toppings = new List<Toppings>();
+            // Toppings = new List<Toppings>();
 
-            AddCrust();
-            AddSize();
-            AddToppings();
+            // AddCrust();
+            // AddSize();
+            // AddToppings();
         }
 
-        public virtual void AddCrust()
+        public virtual void AddCrust(string CrustType)
         {
-            Crust = new Crust();
+            Crust = CrustType;
         }
 
         public virtual void AddSize()
