@@ -3,6 +3,8 @@ using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using PizzaBox.Client.Singletons;
 using System.Collections.Generic;
+using PizzaBox.Data.Entity;
+using System.Linq;
 
 namespace PizzaBox.Client
 {
@@ -25,7 +27,25 @@ namespace PizzaBox.Client
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
-            Run();
+            //IRepository repository = Dependencies.CreateRpository();
+
+            Console.WriteLine("Getting list of pizzas and price");
+            var PizzaList = getPizzaOrder();
+            foreach (var order in PizzaList)
+            {
+                Console.WriteLine($"{order.Pizza} {order.Price}");
+            }
+
+            //Run();
+        }
+
+        static List<PizzaType> getPizzaOrder()
+        {
+            // this will create a session between db and the .net app
+            PizzaBoxInformationContext context = new PizzaBoxInformationContext();
+            var Pizza_order = context.PizzaTypes.ToList();
+            return Pizza_order;
+
         }
 
         /// <summary>

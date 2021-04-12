@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\Pizzabox.Domain\Pizzabox.Domain.csproj" />
-    <ProjectReference Include="..\PizzaBox.Storing\PizzaBox.Storing.csproj" />
-    <ProjectReference Include="..\PizzaBox.Data\PizzaBox.Data.csproj" />
-  
-  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore.design" Version="5.0.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="5.0.5" />
     <PackageReference Include="microsoft.entityframeworkcore.tools" Version="5.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,11 +17,8 @@
     <PackageReference Include="microsoft.extensions.configuration.json" Version="5.0.0" />
   </ItemGroup>
 
-  
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <ItemGroup>
+    
+  </ItemGroup>
 
 </Project>
