@@ -28,9 +28,14 @@ namespace PizzaBox.Domain.Models
             //Toppings.AddRange(new Toppings[] { new Toppings(), new Toppings() });
         }
 
+        public decimal GetPrice()
+        {
+            return PizzaPrice;
+
+        }
+
         public override void addPrice()
         {
-
 
         }
 

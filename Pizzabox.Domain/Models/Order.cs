@@ -18,7 +18,7 @@ namespace PizzaBox.Domain.Models
 
         public List<APizza> ListOfPizzas { get; set; }
 
-        public List<double> ListOfPrices { get; set; }
+        public List<decimal> ListOfPrices { get; set; }
 
         public List<string> ListOfCrusts { get; set; }
 

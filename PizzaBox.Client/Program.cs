@@ -36,6 +36,8 @@ namespace PizzaBox.Client
                 Console.WriteLine($"{order.Pizza} {order.Price}");
             }
 
+            //CheesePizza test = new CheesePizza();
+
             //Run();
         }
 
@@ -68,12 +70,15 @@ namespace PizzaBox.Client
             order.Store = SelectStore();
             order.ListOfPizzas = new List<APizza> { };
             order.ListOfSizes = new List<string> { };
-            order.ListOfPrices = new List<double> { };
+            order.ListOfPrices = new List<decimal> { };
             order.ListOfCrusts = new List<string> { };
             order.Cost = 0;
 
             do
             {
+
+                Console.WriteLine("What is your login ID?");
+
                 order.ListOfPizzas.Add(SelectPizza());
                 order.ListOfCrusts.Add(SelectCrust());
                 order.ListOfSizes.Add(SelectSize());
@@ -161,7 +166,7 @@ namespace PizzaBox.Client
         /// <summary>
         /// 
         /// </summary>
-        private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<double> ListPrice, double CurrentPrice, List<string> ListCrust)
+        private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<decimal> ListPrice, double CurrentPrice, List<string> ListCrust)
         {
             Console.WriteLine("\nYour order is: ");
             int i = 0;
@@ -433,10 +438,10 @@ namespace PizzaBox.Client
 
         }
 
-        private static double CalculatePrice(List<APizza> ListPizza, List<string> ListSize, List<double> ListPrice)
+        private static double CalculatePrice(List<APizza> ListPizza, List<string> ListSize, List<decimal> ListPrice)
         {
-            double BasePrice = 0;
-            double FinalPrice = 0;
+            decimal BasePrice = 0;
+            decimal FinalPrice = 0;
             double CostPrice = 0;
             int i = 0;
 
