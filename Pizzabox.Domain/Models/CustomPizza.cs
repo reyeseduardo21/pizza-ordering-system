@@ -11,23 +11,23 @@ namespace PizzaBox.Domain.Models
         public CustomPizza()
         {
             Name = "CustomPizza";
+            Toppings = new List<Toppings>();
+            PizzaLogId = 0;
+            Size = "null";
+
+
 
         }
 
-        // public override void AddCrust()
-        // {
-        //     Crust = null;
-        // }
 
-        public override void AddSize()
+
+
+
+
+
+        public override void AddToppings(Toppings topping)
         {
-            Size = null;
-
-        }
-
-        public override void AddToppings()
-        {
-
+            Toppings.Add(topping);
         }
 
         public decimal GetPrice()

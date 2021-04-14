@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using PizzaBox.Domain;
 
+using PizzaBox.Domain.Abstracts;
+using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Data
 {
@@ -8,9 +9,29 @@ namespace PizzaBox.Data
     {
         void addPizza(PizzaBox.Domain.Models.CustomPizza pizza);
 
-        List<PizzaBox.Domain.Abstracts.APizza> GetAllPizzas();
+        List<CustomPizza> GetAllPizzas();
+
+        List<Customer> GetUserAndPass();
 
         PizzaBox.Domain.Abstracts.APizza GetPizza(string PizzaChoice);
+
+        List<Store> GetStores();
+
+        Store GetStoreByIndex(int Id);
+
+        CustomPizza GetPizzaByIndex(int Id);
+
+        List<Crust> GetPizzaCrusts();
+
+        Crust GetCrustByIndex(int Id);
+
+        List<Size> GetSizes();
+
+        Size GetSizeByIndex(int Id);
+
+        List<Toppings> GetToppings();
+
+        Toppings GetToppingByIndex(int Id);
 
 
     }

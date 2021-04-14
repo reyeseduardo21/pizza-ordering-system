@@ -5,6 +5,8 @@ using PizzaBox.Client.Singletons;
 using System.Collections.Generic;
 using PizzaBox.Data.Entity;
 using System.Linq;
+using PizzaBox.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PizzaBox.Client
 {
@@ -27,145 +29,118 @@ namespace PizzaBox.Client
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
-            //IRepository repository = Dependencies.CreateRpository();
 
-            Console.WriteLine("Getting list of pizzas and price");
-            var PizzaList = getPizzaOrder();
-            foreach (var order in PizzaList)
-            {
-                Console.WriteLine($"{order.Pizza} {order.Price}");
-            }
-
-            //CheesePizza test = new CheesePizza();
-
-            //Run();
+            Run();
         }
 
-        static List<PizzaType> getPizzaOrder()
-        {
-            // this will create a session between db and the .net app
-            PizzaBoxInformationContext context = new PizzaBoxInformationContext();
-            var Pizza_order = context.PizzaTypes.ToList();
-            return Pizza_order;
 
-        }
 
         /// <summary>
         /// 
         /// </summary>
         private static void Run()
         {
-            var order = new Order();
-            bool AddMore = false;
-            bool CorrectInput = false;
-            var input = "";
-            int PizzaCount = 0;
 
 
 
-            Console.WriteLine("Welcome to PizzaBox");
-            DisplayStoreMenu();
 
-            order.Customer = new Customer();
-            order.Store = SelectStore();
-            order.ListOfPizzas = new List<APizza> { };
-            order.ListOfSizes = new List<string> { };
-            order.ListOfPrices = new List<decimal> { };
-            order.ListOfCrusts = new List<string> { };
-            order.Cost = 0;
+            Console.WriteLine("Welcome to PizzaBox!");
+            Order PizzaOrder = new Order();
 
-            do
+            PizzaOrder.Customer.username = UserLogin();
+            Console.WriteLine($"{PizzaOrder.Customer.username}");
+
+
+            SelectStore(PizzaOrder);
+            //Console.WriteLine($"{PizzaOrder.Store.StoreName}");
+
+            SelectPizza(PizzaOrder);
+
+            foreach (var item in PizzaOrder.ListOfPizzas)
             {
-
-                Console.WriteLine("What is your login ID?");
-
-                order.ListOfPizzas.Add(SelectPizza());
-                order.ListOfCrusts.Add(SelectCrust());
-                order.ListOfSizes.Add(SelectSize());
-
-
-
-
-                //Console.WriteLine("Pizza and price saved");
-                // foreach (APizza item in order.ListOfPizzas)
-                // {
-                //     Console.WriteLine($"{item}");
-                // }
-
-                // foreach (string item in order.ListOfSizes)
-                // {
-                //     Console.WriteLine($"{item}");
-                // }
-
-                // foreach (double item in order.ListOfPrices)
-                // {
-                //     Console.WriteLine($"{item}");
-                // }
-
-                //Console.WriteLine(order.Cost);
-
-                Console.WriteLine("Would you like to add more to this order? (Y/N)");
-                input = Console.ReadLine();
-
-
-
-
-                do
+                Console.WriteLine($"\n{item.Size} {item.Crust} {item.Name} with the following toppings: ");
+                foreach (var topping in item.Toppings)
                 {
-                    if (input.ToLower() == "n" || input.ToLower() == "no" || input.ToLower() == "y" || input.ToLower() == "yes")
+                    if (topping.Name == null)
                     {
-                        CorrectInput = true;
+                        Console.WriteLine("No toppings");
                     }
                     else
-                    {
-                        Console.WriteLine("Invalid entry, please type 'Yes' or 'No' ");
-                        input = Console.ReadLine();
-                        CorrectInput = false;
-                    }
+                        Console.Write($"{topping.Name} ");
 
 
-                } while (CorrectInput == false);
-
-                if (input.ToLower() == "n" || input.ToLower() == "no")
-                {
-                    AddMore = true;
                 }
 
-                PizzaCount += 1;
-                if (PizzaCount == 50)
-                {
-                    Console.WriteLine("Order limit has been reached. You cannot place any more orders.");
-                }
-
-            } while (AddMore == false && PizzaCount != 50);
-
-            order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
-
-            if (order.Cost > 250)
-            {
-                Console.WriteLine("The limit of price is greater than 250, removing the items that were added last until order is $250 or less");
-                do
-                {
-                    order.ListOfPizzas.RemoveAt(order.ListOfPizzas.Count - 1);
-                    order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
-
-                } while (order.Cost > 250);
-
-
+                Console.Write($"for ${item.PizzaPrice}\n");
             }
 
-            //order.Cost = CalculatePrice(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices);
+            Console.WriteLine($"Total cost is: {PizzaOrder.Cost}");
+
+            UploadToDb();
 
 
-            DisplayOrder(order.ListOfPizzas, order.ListOfSizes, order.ListOfPrices, order.Cost, order.ListOfCrusts);
 
+        }
 
-            order.Save();
+        private static void UploadToDb()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// 
+        private static string UserLogin()
+        {
+            Console.WriteLine("Please enter your username:");
+            var user = Console.ReadLine();
+
+            Console.WriteLine("\nEnter your Password:");
+
+            var password = Console.ReadLine();
+
+            Boolean foundID = false;
+
+            IRepository repository = Dependencies.CreateRepository();
+
+            Console.WriteLine("\nVeryifying login credientials...");
+            var LoginInfo = repository.GetUserAndPass();
+            foreach (var item in LoginInfo)
+            {
+                //Console.WriteLine($"{item.username} {item.password}");
+                if (item.username == user && item.password == password)
+                {
+                    Console.WriteLine("You have successfully logged in!");
+                    foundID = true;
+                    break;
+                }
+            }
+
+            if (foundID == false)
+            {
+                do
+                {
+                    Console.WriteLine("Login failed, please enter username and password correctly. Enter Username:");
+                    user = Console.ReadLine();
+                    Console.WriteLine("Enter password:");
+                    password = Console.ReadLine();
+
+                    foreach (var item in LoginInfo)
+
+                        //Console.WriteLine($"{item.username} {item.password}");
+                        if (item.username == user && item.password == password)
+                        {
+                            Console.WriteLine("You have successfully logged in!");
+
+                            foundID = true;
+                            break;
+                        }
+                } while (foundID == false);
+            }
+
+            return user;
+        }
         private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<decimal> ListPrice, double CurrentPrice, List<string> ListCrust)
         {
             Console.WriteLine("\nYour order is: ");
@@ -181,11 +156,15 @@ namespace PizzaBox.Client
 
         private static void DisplayCrustTypes()
         {
-            var index = 0;
+            IRepository repository = Dependencies.CreateRepository();
+            Console.WriteLine("\nPlease select a Crust:");
 
-            foreach (var item in _crustSingleton.Crust)
+            var crusts = repository.GetPizzaCrusts();
+
+            foreach (var item in crusts)
             {
-                Console.WriteLine($"{++index} - {item}");
+                Console.WriteLine($"{item.Id} - {item.Name}  ${item.Price}");
+
             }
         }
 
@@ -194,11 +173,15 @@ namespace PizzaBox.Client
         /// </summary>
         private static void DisplayPizzaMenu()
         {
-            var index = 0;
+            IRepository repository = Dependencies.CreateRepository();
+            Console.WriteLine("\nPlease select a Pizza:");
 
-            foreach (var item in _pizzaSingleton.Pizzas)
+            var StoreLocation = repository.GetAllPizzas();
+
+            foreach (var item in StoreLocation)
             {
-                Console.WriteLine($"{++index} - {item}");
+                Console.WriteLine($"{item.PizzaId} - {item.Name}  ${item.PizzaPrice}");
+
             }
         }
 
@@ -207,234 +190,290 @@ namespace PizzaBox.Client
         /// </summary>
         private static void DisplayStoreMenu()
         {
-            var index = 0;
+            IRepository repository = Dependencies.CreateRepository();
+            Console.WriteLine("\nPlease select a store:");
 
-            foreach (var item in _storeSingleton.Stores)
+            var StoreLocation = repository.GetStores();
+            foreach (var item in StoreLocation)
             {
-                Console.WriteLine($"{++index} - {item}");
-            }
-        }
+                Console.WriteLine($"{item.StoreID} - {item.StoreName}, {item.StoreLocation}");
 
+            }
+
+
+
+        }
+        static List<PizzaType> getPizzaOrder()
+        {
+            // this will create a session between db and the .net app
+            PizzaBoxInformationContext context = new PizzaBoxInformationContext();
+            var Pizza_order = context.PizzaTypes.ToList();
+            return Pizza_order;
+
+        }
         private static void DisplayPizzaSize()
         {
-            var index = 0;
+            IRepository repository = Dependencies.CreateRepository();
+            Console.WriteLine("\nPlease select a size:");
 
-            foreach (var item in _sizeSingleton.Size)
+            var sizes = repository.GetSizes();
+
+            foreach (var item in sizes)
             {
-                Console.WriteLine($"{++index} - {item}");
+                Console.WriteLine($"{item.Id} - {item.Name}, {item.Price}");
+
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private static AStore SelectStore()
+        private static void DisplayToppings()
         {
-            Boolean number = false;
-            var PizzaStoreNumber = Console.ReadLine();
-            int input = 2;
-            int LastIndex = _storeSingleton.Stores.Count;
-            do
+            IRepository repository = Dependencies.CreateRepository();
+            Console.WriteLine("\nPlease select a topping:");
+
+            var topping = repository.GetToppings();
+
+            foreach (var item in topping)
             {
-                try
-                {
-                    input = int.Parse(PizzaStoreNumber); // be careful (think execpetion/error handling)
-                    do
-                    {
-                        if (input <= LastIndex)
-                        {
-                            number = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter the number of the store.");
-                            PizzaStoreNumber = Console.ReadLine();
-                            input = int.Parse(PizzaStoreNumber);
-                            if (input <= LastIndex)
-                            {
-                                number = true;
-                            }
-                            number = false;
-                        }
-                    } while (number == false);
+                Console.WriteLine($"{item.Id} - {item.Name}, {item.Price}");
 
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Please enter the number of the store.", e);
-                    PizzaStoreNumber = Console.ReadLine();
-                }
-
-            } while (number == false);
-
-
-
-
-            return _storeSingleton.Stores[input - 1];
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private static APizza SelectPizza()
+        private static void SelectStore(Order order)
         {
-            DisplayPizzaMenu();
+            DisplayStoreMenu();
+            var StoreLocation = Console.ReadLine();
+            IRepository repository = Dependencies.CreateRepository();
+            var holder = repository.GetStoreByIndex(int.Parse(StoreLocation));
 
-            int input = 1;
+            order.Store.StoreName = holder.StoreName;
+            order.Store.StoreLocation = holder.StoreLocation;
+            order.Store.StoreID = holder.StoreID;
 
-            int LastIndex = _pizzaSingleton.Pizzas.Count;
-            Boolean number = false;
-            var PizzaNumber = "null";
+
+
+
+
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private static void SelectPizza(Order order)
+        {
+
+            Boolean MorePizza = false;
+            int count = 1;
+
 
             do
             {
-                try
-                {
-                    input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
-                    do
-                    {
-                        //check if within index
-                        if (input <= LastIndex)
-                        {
-                            number = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter the correct pizza number.");
-                            DisplayPizzaMenu();
-                            PizzaNumber = Console.ReadLine();
-                            input = int.Parse(PizzaNumber);
-                            if (input <= LastIndex)
-                            {
-                                number = true;
-                            }
-                            number = false;
-                        }
-                    } while (number == false);
+                CustomPizza Pizza = new CustomPizza();
+                DisplayPizzaMenu();
+                var PizzaSelect = Console.ReadLine();
+                IRepository repository = Dependencies.CreateRepository();
+                var holder = repository.GetPizzaByIndex(int.Parse(PizzaSelect));
+                holder.PizzaLogId = count;
 
+                Pizza.Name = holder.Name;
+                Pizza.PizzaLogId = count;
+                Toppings topping;
+
+                switch (holder.PizzaId)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        topping = new Toppings
+                        {
+                            Name = "Pepperoni",
+                            Price = 0,
+                            Id = 1
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Sausage",
+                            Price = 1,
+                            Id = 2
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Chicken",
+                            Price = 1.5M,
+                            Id = 4
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Cheese",
+                            Price = 0,
+                            Id = 5
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Tomato Sauce",
+                            Price = 0,
+                            Id = 6
+                        };
+                        Pizza.Toppings.Add(topping);
+                        break;
+                    case 3:
+                        topping = new Toppings
+                        {
+                            Name = "Pepperoni",
+                            Price = 0,
+                            Id = 1
+                        };
+                        Pizza.Toppings.Add(topping);
+                        break;
+                    case 4:
+
+                        topping = new Toppings
+                        {
+                            Name = "Broccoli",
+                            Price = 1,
+                            Id = 2
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Olives",
+                            Price = 1.5M,
+                            Id = 4
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Cheese",
+                            Price = 0,
+                            Id = 5
+                        };
+                        Pizza.Toppings.Add(topping);
+                        topping = new Toppings
+                        {
+                            Name = "Tomato Sauce",
+                            Price = 0,
+                            Id = 6
+                        };
+                        Pizza.Toppings.Add(topping);
+                        break;
 
                 }
-                //check if number was entered
-                catch (Exception e)
+
+                Pizza.PizzaPrice += holder.PizzaPrice;
+
+                order.Cost += holder.PizzaPrice;
+
+                SelectCrust(order, Pizza);
+                SelectSize(order, Pizza);
+                SelectToppings(order, Pizza);
+                order.ListOfPizzas.Add(Pizza);
+
+                Console.WriteLine("Would you like to add more to your order? (Y/N)");
+                var input = Console.ReadLine();
+
+                if (input.ToLower() == "n")
                 {
-                    Console.WriteLine("Please enter the correct pizza number.", e);
-                    DisplayPizzaMenu();
-                    PizzaNumber = Console.ReadLine();
+                    MorePizza = true;
                 }
 
-            } while (number == false);
+                count++;
+            } while (MorePizza == false);
 
-            var pizza = _pizzaSingleton.Pizzas[input - 1];
 
-            return pizza;
+
+            // foreach (var item in order.ListOfPizzas)
+            // {
+            //     Console.WriteLine($"{item.Name} {item.PizzaPrice}");
+            // }
+
         }
 
-        private static string SelectCrust()
+        private static void SelectToppings(Order order, CustomPizza pizza)
+        {
+
+            //Boolean MoreToppings = false;
+            Console.WriteLine("Do you want to add more toppings? (Y/N)");
+            var input = Console.ReadLine();
+            if (input.ToLower() == "y")
+            {
+                DisplayToppings();
+
+                var ToppingSelect = Console.ReadLine();
+                IRepository repository = Dependencies.CreateRepository();
+                var holder = repository.GetToppingByIndex(int.Parse(ToppingSelect));
+                Toppings topping = new Toppings
+                {
+                    Name = holder.Name,
+                    Price = holder.Price,
+                    PizzaLogId = pizza.PizzaLogId,
+                    Id = holder.Id
+                };
+                pizza.AddToppings(topping);
+
+                order.ListOfToppings.Add(holder);
+                order.Cost += holder.Price;
+            }
+
+
+
+
+            // foreach (var item in order.ListOfCrusts)
+            // {
+            //     Console.WriteLine($"{item.Name} {item.Price}");
+            // }
+        }
+
+
+
+        private static void SelectCrust(Order order, CustomPizza pizza)
         {
             DisplayCrustTypes();
 
-            int input = 1;
+            var CrustSelect = Console.ReadLine();
+            IRepository repository = Dependencies.CreateRepository();
+            var holder = repository.GetCrustByIndex(int.Parse(CrustSelect));
 
-            int LastIndex = _crustSingleton.Crust.Count;
-            Boolean number = false;
-            var CrustNumber = "null";
-
-            do
-            {
-                try
-                {
-                    input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
-                    do
-                    {
-                        //check if within index
-                        if (input <= LastIndex)
-                        {
-                            number = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter the correct Crust number.");
-                            DisplayPizzaMenu();
-                            CrustNumber = Console.ReadLine();
-                            input = int.Parse(CrustNumber);
-                            if (input <= LastIndex)
-                            {
-                                number = true;
-                            }
-                            number = false;
-                        }
-                    } while (number == false);
+            pizza.Crust = holder.Name;
+            pizza.PizzaPrice += holder.Price;
 
 
-                }
-                //check if number was entered
-                catch (Exception e)
-                {
-                    Console.WriteLine("Please enter the correct crust number.", e);
-                    DisplayPizzaMenu();
-                    CrustNumber = Console.ReadLine();
-                }
+            order.Cost += holder.Price;
 
-            } while (number == false);
 
-            var crust = _crustSingleton.Crust[input - 1];
 
-            return crust;
+
+
+            // foreach (var item in order.ListOfCrusts)
+            // {
+            //     Console.WriteLine($"{item.Name} {item.Price}");
+            // }
+
+
         }
 
-        private static string SelectSize()
+        private static void SelectSize(Order order, CustomPizza pizza)
         {
             DisplayPizzaSize();
-            int input = 1;
+            var SizeSelect = Console.ReadLine();
+            IRepository repository = Dependencies.CreateRepository();
+            var holder = repository.GetSizeByIndex(int.Parse(SizeSelect));
 
-            int LastIndex = _sizeSingleton.Size.Count;
-            Boolean number = false;
-            var SizeNumber = "null";
+            pizza.Size = holder.Name;
+            pizza.PizzaPrice += holder.Price;
 
-            do
-            {
-                try
-                {
-                    input = int.Parse(Console.ReadLine()); // be careful (think execpetion/error handling)
-                    do
-                    {
-                        if (input <= LastIndex)
-                        {
-                            number = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter the correct size number.");
-                            DisplayPizzaSize();
-                            SizeNumber = Console.ReadLine();
-                            input = int.Parse(SizeNumber);
-                            if (input <= LastIndex && input > 0)
-                            {
-                                number = true;
-                            }
-                            number = false;
-                        }
-                    } while (number == false);
+            // foreach (var item in order.ListOfSizes)
+            // {
+            //     Console.WriteLine($"{item.Name} {item.Price}");
+            // }
+            order.Cost += holder.Price;
 
 
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Please enter the correct size number.", e);
-                    DisplayPizzaSize();
-                    SizeNumber = Console.ReadLine();
-                }
-
-            } while (number == false);
-
-
-
-            var size = _sizeSingleton.Size[input - 1];
-
-
-            return size;
 
         }
 
@@ -483,4 +522,7 @@ namespace PizzaBox.Client
         }
     }
 }
+
+
+
 

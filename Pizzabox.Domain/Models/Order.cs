@@ -8,19 +8,32 @@ namespace PizzaBox.Domain.Models
     /// </summary>
     public class Order
     {
-        public AStore Store { get; set; }
-        public Customer Customer { get; set; }
-        public APizza Pizza { get; set; }
+        public Store Store = new Store
+        {
+            StoreID = 0,
+            StoreLocation = "null",
+            StoreName = "Null"
+        };
+        public Customer Customer = new Customer
+        {
+            username = "null",
+            password = "null"
+        };
+        //public APizza Pizza { get; set; }
 
-        public double Cost { get; set; }
+        public decimal Cost = 0;
 
-        public List<string> ListOfSizes { get; set; }
+        public List<Size> ListOfSizes = new List<Size>();
 
-        public List<APizza> ListOfPizzas { get; set; }
+        public List<CustomPizza> ListOfPizzas = new List<CustomPizza>();
 
-        public List<decimal> ListOfPrices { get; set; }
+        public List<decimal> ListOfPrices = new List<decimal>();
 
-        public List<string> ListOfCrusts { get; set; }
+        public List<Crust> ListOfCrusts = new List<Crust>();
+
+        public List<Toppings> ListOfToppings = new List<Toppings>();
+
+
 
         /// <summary>
         /// 

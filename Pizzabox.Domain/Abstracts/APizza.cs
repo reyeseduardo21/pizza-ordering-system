@@ -17,37 +17,27 @@ namespace PizzaBox.Domain.Abstracts
         //XmlIgnoreAttribute();
         public string Crust { get; set; }
         public string Size { get; set; }
-        public string Toppings { get; set; }
+        public List<Toppings> Toppings { get; set; }
 
         public string Name { get; set; }
 
         public decimal PizzaPrice { get; set; }
 
-        protected APizza()
-        {
-            Factory();
-        }
+        public int PizzaId { get; set; }
 
-        private void Factory()
-        {
-            // Toppings = new List<Toppings>();
+        public int PizzaLogId { get; set; }
 
-            // AddCrust();
-            // AddSize();
-            // AddToppings();
-        }
+
+
+
 
         public virtual void AddCrust(string CrustType)
         {
             Crust = CrustType;
         }
 
-        public virtual void AddSize()
-        {
-            Size = null;
-        }
 
-        public abstract void AddToppings();
+        public abstract void AddToppings(Toppings toppings);
 
         public abstract void addPrice();
 

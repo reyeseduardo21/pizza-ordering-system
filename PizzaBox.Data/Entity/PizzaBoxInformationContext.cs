@@ -17,7 +17,12 @@ namespace PizzaBox.Data.Entity
         {
         }
 
+        public virtual DbSet<CustomerLogin> CustomerLogins { get; set; }
+        public virtual DbSet<PizzaCrust> PizzaCrusts { get; set; }
         public virtual DbSet<PizzaOrder> PizzaOrders { get; set; }
+        public virtual DbSet<PizzaSizePrice> PizzaSizePrices { get; set; }
+        public virtual DbSet<PizzaTopping> PizzaToppings { get; set; }
+        public virtual DbSet<PizzaToppingMatching> PizzaToppingMatchings { get; set; }
         public virtual DbSet<PizzaType> PizzaTypes { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
 
@@ -33,6 +38,32 @@ namespace PizzaBox.Data.Entity
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<CustomerLogin>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.CustomerId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("CustomerID");
+
+                entity.Property(e => e.CustomerPassword)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PizzaCrust>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.CrustPrice).HasColumnType("decimal(3, 2)");
+
+                entity.Property(e => e.Crusts)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
 
             modelBuilder.Entity<PizzaOrder>(entity =>
             {
@@ -70,20 +101,65 @@ namespace PizzaBox.Data.Entity
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<PizzaSizePrice>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PizzaSizePrice");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(3, 2)");
+
+                entity.Property(e => e.Size)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SizeId).HasColumnName("SizeID");
+            });
+
+            modelBuilder.Entity<PizzaTopping>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.Toppings)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ToppingsPrice).HasColumnType("decimal(3, 2)");
+            });
+
+            modelBuilder.Entity<PizzaToppingMatching>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PizzaToppingMatching");
+
+                entity.Property(e => e.Topping)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<PizzaType>(entity =>
             {
                 entity.HasNoKey();
+
+                entity.Property(e => e.BasePrice)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Pizza)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Price).HasColumnType("decimal(5, 2)");
+                entity.Property(e => e.PizzaId).HasColumnName("PizzaID");
             });
 
             modelBuilder.Entity<Store>(entity =>
             {
                 entity.HasNoKey();
+
+                entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
                 entity.Property(e => e.StoreName)
                     .HasMaxLength(50)

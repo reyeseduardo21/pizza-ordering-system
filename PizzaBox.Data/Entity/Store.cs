@@ -9,5 +9,6 @@ namespace PizzaBox.Data.Entity
     {
         public string StoreName { get; set; }
         public string StoreState { get; set; }
+        public int? StoreId { get; set; }
     }
 }

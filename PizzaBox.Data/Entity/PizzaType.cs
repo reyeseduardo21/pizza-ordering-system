@@ -8,6 +8,7 @@ namespace PizzaBox.Data.Entity
     public partial class PizzaType
     {
         public string Pizza { get; set; }
-        public decimal? Price { get; set; }
+        public string BasePrice { get; set; }
+        public int? PizzaId { get; set; }
     }
 }

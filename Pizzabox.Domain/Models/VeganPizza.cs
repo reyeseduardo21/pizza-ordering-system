@@ -14,15 +14,11 @@ namespace PizzaBox.Domain.Models
         //     Crust = null;
         // }
 
-        public override void AddSize()
-        {
-            Size = null;
 
-        }
 
-        public override void AddToppings()
+        public override void AddToppings(Toppings topping)
         {
-            //Toppings.AddRange(new Toppings[] { new Toppings(), new Toppings() });
+            Toppings.Add(topping);
         }
 
         public override void addPrice()
