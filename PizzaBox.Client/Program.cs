@@ -61,7 +61,7 @@ namespace PizzaBox.Client
                 Console.WriteLine($"\n{item.Size} {item.Crust} {item.Name} with the following toppings: ");
                 foreach (var topping in item.Toppings)
                 {
-                    if (topping.Name == null)
+                    if (topping.Name == "null")
                     {
                         Console.WriteLine("No toppings");
                     }
@@ -76,7 +76,7 @@ namespace PizzaBox.Client
 
             Console.WriteLine($"Total cost is: {PizzaOrder.Cost}");
 
-            UploadToDb();
+            //UploadToDb();
 
 
 
@@ -373,6 +373,40 @@ namespace PizzaBox.Client
                 SelectSize(order, Pizza);
                 SelectToppings(order, Pizza);
                 order.ListOfPizzas.Add(Pizza);
+
+                Console.WriteLine($"How many of this {Pizza.Name} would you like?");
+                var number = Console.ReadLine();
+                for (int i = 0; i < int.Parse(number); i++)
+                {
+
+                    if (order.Cost <= 250 && count != 50)
+                    {
+                        count++;
+                        Pizza.PizzaLogId = count;
+                        order.ListOfPizzas.Add(Pizza);
+                        order.Cost += Pizza.PizzaPrice;
+                    }
+                    if (order.Cost >= 250)
+                    {
+                        do
+                        {
+                            //decimal placeholder = order.Cost;
+                            order.ListOfPizzas.RemoveAt(count - 1);
+                            order.Cost -= Pizza.PizzaPrice;
+
+                        } while (order.Cost >= 250);
+
+                        Console.WriteLine("You have exceeded the $250 order limit. We have removed the last entered pizzas from your order.");
+
+                        break;
+
+                    }
+                    else if (count == 50)
+                    {
+                        Console.WriteLine("You have reached the item limit of 50 and cannot place anymore orders");
+                        break;
+                    }
+                }
 
                 Console.WriteLine("Would you like to add more to your order? (Y/N)");
                 var input = Console.ReadLine();
