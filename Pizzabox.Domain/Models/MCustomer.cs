@@ -3,13 +3,13 @@ namespace PizzaBox.Domain.Models
     /// <summary>
     /// 
     /// </summary>
-    public class Customer
+    public class MCustomer
     {
         public string username { get; set; }
 
         public string password { get; set; }
 
-        public int? CustomerId { get; set; }
+        public int CustomerID { get; set; }
 
         public string FirstName { get; set; }
 

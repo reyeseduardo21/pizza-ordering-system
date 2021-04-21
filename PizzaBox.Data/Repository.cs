@@ -5,6 +5,7 @@ using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Models;
 using System.Linq;
 using System.Linq.Expressions;
+using System;
 
 namespace PizzaBox.Data
 {
@@ -33,16 +34,29 @@ namespace PizzaBox.Data
             return pizza.Select(mapper.Map).ToList();
         }
 
-        public List<Customer> GetUserAndPass()
+        public List<MCustomer> GetCustomers()
+        {
+            var customers = context.Customers;
+            Console.WriteLine(customers);
+            return customers.Select(mapper.Map).ToList();
+        }
+
+        public void AddCustomer(MCustomer customer)
+        {
+            context.Add(mapper.Map(customer));
+            context.SaveChanges();
+        }
+
+        public List<MCustomer> GetUserAndPass()
         {
             var info = context.Customers;
             return info.Select(mapper.Map).ToList();
         }
 
-        public APizza GetPizza(string PizzaChoice)
-        {
-            throw new System.NotImplementedException();
-        }
+        // public APizza GetPizza(string PizzaChoice)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         public List<Store> GetStores()
         {

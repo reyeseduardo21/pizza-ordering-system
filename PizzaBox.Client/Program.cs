@@ -42,51 +42,257 @@ namespace PizzaBox.Client
         {
 
 
-
-
-            Console.WriteLine("Welcome to PizzaBox!");
+            IRepository repository = Dependencies.CreateRepository();
+            MCustomer CurrentCustomer;
             MOrder PizzaOrder = new MOrder();
+            Console.WriteLine("Welcome to PizzaBox!");
 
-            PizzaOrder.Customer.username = UserLogin();
-            Console.WriteLine($"{PizzaOrder.Customer.username}");
-
-
-            SelectStore(PizzaOrder);
-            //Console.WriteLine($"{PizzaOrder.Store.StoreName}");
-
-            SelectPizza(PizzaOrder);
-
-            foreach (var item in PizzaOrder.ListOfPizzas)
+            Console.WriteLine("Are you a new or returning customer?\n1 - New customer (create new login)\n2 - Returning (sign in)\n3 - Sign in as Guest");
+            var LoginInput = Console.ReadLine();
+            if (Int32.Parse(LoginInput) == 1)
             {
-                Console.WriteLine($"\n{item.Size} {item.Crust} {item.Name} with the following toppings: ");
-                foreach (var topping in item.Toppings)
-                {
-                    if (topping.Name == "null")
-                    {
-                        Console.WriteLine("No toppings");
-                    }
-                    else
-                        Console.Write($"{topping.Name} ");
+                CurrentCustomer = CreateNewCustomer();
+                var customers = repository.GetCustomers();
+                int TotalCustomers = customers.Count();
+                CurrentCustomer.CustomerID = TotalCustomers;
+                repository.AddCustomer(CurrentCustomer);
+                Console.WriteLine("You're account has successfully been created!");
+                //AddCustomer(repository, CurrentCustomer);
 
+            }
+            else if (Int32.Parse(LoginInput) == 2)
+            {
 
-                }
-
-                Console.Write($"for ${item.PizzaPrice}\n");
+                PizzaOrder.Customer.username = UserLogin();
+            }
+            else
+            {
+                CurrentCustomer = GuestLogin();
             }
 
-            Console.WriteLine($"Total cost is: {PizzaOrder.Cost}");
-
-            IRepository repository = Dependencies.CreateRepository();
-
-            // foreach (var item in PizzaOrder.ListOfPizzas)
-            // {
-            //     repository.AddOrderToDb(item);
-            // }
 
 
+
+            Console.WriteLine($"{PizzaOrder.Customer.username} is logged in!");
+
+            SelectStore(PizzaOrder);
+            SelectPizza(PizzaOrder);
+            DisplayOrder(PizzaOrder);
 
 
         }
+
+        public static MCustomer GuestLogin()
+        {
+            bool check = false;
+            Console.WriteLine("Enter your address, city, state (seperated by a comma)");
+            var TempAddress = Console.ReadLine();
+            Console.WriteLine("Enter your credit card number: ");
+            var TempCardNumber = Console.ReadLine();
+            decimal TempCard = 5555555555555555;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempCard = decimal.Parse(TempCardNumber);
+                    if (TempCardNumber.Length == 15 || TempCardNumber.Length == 16)
+                    {
+                        check = true;
+                    }
+                    else
+                    {
+                        check = false;
+                    }
+
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid credit card number. Try again: ");
+                    Console.WriteLine("Enter your credit card number: ");
+                    TempCardNumber = Console.ReadLine();
+                }
+
+            } while (check == false);
+
+            Console.WriteLine("Enter the experation date (MMYY)");
+            var TempExpDate = Console.ReadLine();
+            Console.WriteLine("Enter the security code: ");
+            short TempExp = 0294;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempExp = short.Parse(TempExpDate);
+                    check = true;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid security number. Try again: ");
+                    Console.WriteLine("Enter your credit card's security number: ");
+                    TempExpDate = Console.ReadLine();
+                }
+
+            } while (check == false);
+            var TempCvv = Console.ReadLine();
+            short TempCode = 123;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempCode = short.Parse(TempCvv);
+                    check = true;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid security number. Try again: ");
+                    Console.WriteLine("Enter your credit card's security number: ");
+                    TempCvv = Console.ReadLine();
+                }
+
+            } while (check == false);
+
+            return new MCustomer
+            {
+                username = "Guest",
+                password = "null",
+                FirstName = "Guest",
+                LastName = "Guest",
+                PhoneNumber = 2223334444,
+                Address = "null",
+                CardNumber = TempCard,
+                CardExpDate = TempExp,
+                CardCode = TempCode
+
+            };
+        }
+
+        public static MCustomer CreateNewCustomer()
+        {
+            bool check = false;
+            Console.WriteLine("Enter a username:");
+            var TempUsername = Console.ReadLine();
+            Console.WriteLine("Enter a password: ");
+            var TempPassword = Console.ReadLine();
+            Console.WriteLine("Enter your first name: ");
+            var TempFirstName = Console.ReadLine();
+            Console.WriteLine("Enter your last name: ");
+            var TempLastName = Console.ReadLine();
+            Console.WriteLine("Enter your phone number: ");
+            var TempNumber = Console.ReadLine();
+            decimal TempPhoneNumber = 1111111111;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempPhoneNumber = decimal.Parse(TempNumber);
+                    check = true;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid phone number. Try again: ");
+                    Console.WriteLine("Enter your phone number: ");
+                    TempNumber = Console.ReadLine();
+                }
+
+            } while (check == false);
+
+            Console.WriteLine("Enter your address, city, state (seperated by a comma)");
+            var TempAddress = Console.ReadLine();
+            Console.WriteLine("Enter your credit card number: ");
+            var TempCardNumber = Console.ReadLine();
+            decimal TempCard = 5555555555555555;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempCard = decimal.Parse(TempCardNumber);
+                    if (TempCardNumber.Length == 15 || TempCardNumber.Length == 16)
+                    {
+                        check = true;
+                    }
+                    else
+                    {
+                        check = false;
+                    }
+
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid credit card number. Try again: ");
+                    Console.WriteLine("Enter your credit card number: ");
+                    TempCardNumber = Console.ReadLine();
+                }
+
+            } while (check == false);
+
+            Console.WriteLine("Enter the experation date (MMYY)");
+            var TempExpDate = Console.ReadLine();
+            Console.WriteLine("Enter the security code: ");
+            short TempExp = 0294;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempExp = short.Parse(TempExpDate);
+                    check = true;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid security number. Try again: ");
+                    Console.WriteLine("Enter your credit card's security number: ");
+                    TempExpDate = Console.ReadLine();
+                }
+
+            } while (check == false);
+            var TempCvv = Console.ReadLine();
+            short TempCode = 123;
+            do
+            {
+                check = false;
+                try
+                {
+                    TempCode = short.Parse(TempCvv);
+                    check = true;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid security number. Try again: ");
+                    Console.WriteLine("Enter your credit card's security number: ");
+                    TempCvv = Console.ReadLine();
+                }
+
+            } while (check == false);
+
+
+            return new MCustomer
+            {
+                username = TempUsername,
+                password = TempPassword,
+                FirstName = TempFirstName,
+                LastName = TempLastName,
+                PhoneNumber = TempPhoneNumber,
+                Address = TempAddress,
+                CardNumber = TempCard,
+                CardExpDate = TempExp,
+                CardCode = TempCode
+
+            };
+        }
+
+        // private static void AddCustomer(IRepository repository, MCustomer customer)
+        // {
+        //     var customers = repository.GetCustomers();
+
+        //     repository.AddCustomer(customer);
+        //     Console.WriteLine("You're account has successfully been created!");
+
+        // }
 
         private static void UploadToDb(MOrder order)
         {
@@ -99,7 +305,7 @@ namespace PizzaBox.Client
         /// 
         private static string UserLogin()
         {
-            Console.WriteLine("Please enter your username:");
+            Console.WriteLine("To login please enter your username:");
             var user = Console.ReadLine();
 
             Console.WriteLine("\nEnter your Password:");
@@ -147,17 +353,17 @@ namespace PizzaBox.Client
 
             return user;
         }
-        private static void DisplayOrder(List<APizza> ListPizza, List<string> ListSize, List<decimal> ListPrice, double CurrentPrice, List<string> ListCrust)
+        private static void DisplayOrder(MOrder order)
         {
             Console.WriteLine("\nYour order is: ");
             int i = 0;
-            foreach (APizza item in ListPizza)
+            foreach (CustomPizza item in order.ListOfPizzas)
             {
-                Console.WriteLine($"\n{ListSize[i]} {ListCrust[i]} {item} for ${ListPrice[i]}");
+                Console.WriteLine($"\n{item.Size} {item.Toppings} {item.Name}");
                 i++;
 
             }
-            Console.WriteLine($"\nYour total is: ${CurrentPrice}");
+            Console.WriteLine($"\nYour total is: ${order.Cost}");
         }
 
         private static void DisplayCrustTypes()
@@ -182,9 +388,9 @@ namespace PizzaBox.Client
             IRepository repository = Dependencies.CreateRepository();
             Console.WriteLine("\nPlease select a Pizza:");
 
-            var StoreLocation = repository.GetAllPizzas();
+            var pizzas = repository.GetAllPizzas();
 
-            foreach (var item in StoreLocation)
+            foreach (var item in pizzas)
             {
                 Console.WriteLine($"{item.PizzaId} - {item.Name}  ${item.PizzaPrice}");
 
@@ -202,9 +408,11 @@ namespace PizzaBox.Client
             var StoreLocation = repository.GetStores();
             foreach (var item in StoreLocation)
             {
-                Console.WriteLine($"{item.StoreID} - {item.StoreID}, {item.StoreLocation}");
+                Console.WriteLine($"{item.StoreID} - {item.StoreLocation}");
 
             }
+
+
 
 
 
@@ -255,12 +463,7 @@ namespace PizzaBox.Client
             var holder = repository.GetStoreByIndex(int.Parse(StoreLocation));
 
             order.Store.StoreLocation = holder.StoreLocation;
-            order.Store.StoreLocation = holder.StoreLocation;
             order.Store.StoreID = holder.StoreID;
-
-
-
-
 
         }
         /// <summary>

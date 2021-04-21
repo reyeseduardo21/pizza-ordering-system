@@ -12,11 +12,11 @@ namespace PizzaBox.Data
             return new PizzaBox.Domain.Models.MOrder
             {
                 ListOfPizzas = (List<Domain.Models.CustomPizza>)pizza.Pizzas,
-                Customer = new Domain.Models.Customer
+                Customer = new Domain.Models.MCustomer
                 {
                     username = pizza.Customer.Username,
                     password = pizza.Customer.Password,
-                    CustomerId = pizza.CustomerId,
+                    CustomerID = (int)pizza.CustomerId,
                     FirstName = pizza.Customer.CustomerFirstName,
                     LastName = pizza.Customer.CustomerLastName,
                     PhoneNumber = pizza.Customer.CustomerPhone,
@@ -50,6 +50,7 @@ namespace PizzaBox.Data
             {
                 PizzaId = pizza.PizzaId,
                 PizzaPrice = pizza.PizzaPrice,
+
 
 
 
@@ -98,9 +99,9 @@ namespace PizzaBox.Data
             };
         }
 
-        public PizzaBox.Domain.Models.Customer Map(Entity.Customer customer)
+        public PizzaBox.Domain.Models.MCustomer Map(Entity.Customer customer)
         {
-            return new PizzaBox.Domain.Models.Customer
+            return new PizzaBox.Domain.Models.MCustomer
             {
                 username = customer.Username,
                 password = customer.Password,
@@ -110,18 +111,34 @@ namespace PizzaBox.Data
                 Address = customer.CustomerAddress,
                 CardNumber = customer.CustomerCardNumber,
                 CardExpDate = customer.CustomerCardDate,
-                CardCode = customer.CustomerCardCvv
+                CardCode = customer.CustomerCardCvv,
+                CustomerID = customer.CustomerId
             };
         }
 
-
+        public PizzaBox.Data.Entity.Customer Map(Domain.Models.MCustomer customer)
+        {
+            return new PizzaBox.Data.Entity.Customer
+            {
+                Username = customer.username,
+                Password = customer.password,
+                CustomerFirstName = customer.FirstName,
+                CustomerLastName = customer.LastName,
+                CustomerPhone = customer.PhoneNumber,
+                CustomerAddress = customer.Address,
+                CustomerCardNumber = customer.CardNumber,
+                CustomerCardDate = customer.CardExpDate,
+                CustomerCardCvv = customer.CardCode,
+                CustomerId = customer.CustomerID
+            };
+        }
 
         public PizzaBox.Data.Entity.Order Map(PizzaBox.Domain.Models.MOrder order)
         {
             return new PizzaBox.Data.Entity.Order
             {
                 OrderId = order.OrderID,
-                CustomerId = order.Customer.CustomerId,
+                CustomerId = order.Customer.CustomerID,
                 StoreId = order.Store.StoreID,
                 Cost = order.Cost,
                 OrderDate = System.DateTime.Now,

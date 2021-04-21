@@ -9,10 +9,10 @@ namespace PizzaBox.Domain.Models
     public class MOrder
     {
 
-        public int OrderID;
+        public int OrderID = 0;
 
-        public Store Store { get; set; }
-        public Customer Customer { get; set; }
+        public Store Store = new Store();
+        public MCustomer Customer = new MCustomer();
 
 
         public decimal? Cost = 0;

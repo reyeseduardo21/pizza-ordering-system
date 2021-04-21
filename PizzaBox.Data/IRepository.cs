@@ -11,9 +11,13 @@ namespace PizzaBox.Data
 
         List<CustomPizza> GetAllPizzas();
 
-        List<Customer> GetUserAndPass();
+        List<MCustomer> GetUserAndPass();
 
-        PizzaBox.Domain.Abstracts.APizza GetPizza(string PizzaChoice);
+        List<MCustomer> GetCustomers();
+
+        void AddCustomer(MCustomer customer);
+
+        //PizzaBox.Domain.Abstracts.APizza GetPizza(string PizzaChoice);
 
         List<Store> GetStores();
 
