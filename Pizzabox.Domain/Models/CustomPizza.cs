@@ -12,7 +12,7 @@ namespace PizzaBox.Domain.Models
         {
             Name = "CustomPizza";
             Toppings = new List<Toppings>();
-            PizzaLogId = 0;
+            OrderId = 0;
             Size = "null";
 
 

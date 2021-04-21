@@ -17,20 +17,20 @@ namespace PizzaBox.Data.Entity
         {
         }
 
-        public virtual DbSet<CustomerLogin> CustomerLogins { get; set; }
-        public virtual DbSet<PizzaCrust> PizzaCrusts { get; set; }
-        public virtual DbSet<PizzaOrder> PizzaOrders { get; set; }
-        public virtual DbSet<PizzaSizePrice> PizzaSizePrices { get; set; }
+        public virtual DbSet<Crust> Crusts { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Pizza> Pizzas { get; set; }
+        public virtual DbSet<PizzaSize> PizzaSizes { get; set; }
         public virtual DbSet<PizzaTopping> PizzaToppings { get; set; }
-        public virtual DbSet<PizzaToppingMatching> PizzaToppingMatchings { get; set; }
-        public virtual DbSet<PizzaType> PizzaTypes { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
+        public virtual DbSet<Topping> Toppings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=tcp:pizzasavinginformation.database.windows.net,1433;Initial Catalog=PizzaBoxInformation;Persist Security Info=False;User ID=dev;Password=Password1!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
@@ -39,135 +39,191 @@ namespace PizzaBox.Data.Entity
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<CustomerLogin>(entity =>
+            modelBuilder.Entity<Crust>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("Crust");
 
-                entity.Property(e => e.CustomerId)
+                entity.HasIndex(e => e.CrustName, "UQ__Crust__C2369FD2656AC1E0")
+                    .IsUnique();
+
+                entity.Property(e => e.CrustId).HasColumnName("CrustID");
+
+                entity.Property(e => e.CrustName)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("CustomerID");
-
-                entity.Property(e => e.CustomerPassword)
-                    .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.CrustPrice).HasColumnType("smallmoney");
             });
 
-            modelBuilder.Entity<PizzaCrust>(entity =>
+            modelBuilder.Entity<Customer>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("Customer");
 
-                entity.Property(e => e.CrustPrice).HasColumnType("decimal(3, 2)");
+                entity.HasIndex(e => e.Username, "UQ__Customer__536C85E445FEBE28")
+                    .IsUnique();
 
-                entity.Property(e => e.Crusts)
+                entity.Property(e => e.CustomerId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("CustomerID");
+
+                entity.Property(e => e.CustomerAddress)
                     .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<PizzaOrder>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.Property(e => e.CustomerId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("CustomerID");
-
-                entity.Property(e => e.DateOrdered)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PizzaCrust)
+                entity.Property(e => e.CustomerCardCvv).HasColumnName("CustomerCardCVV");
+
+                entity.Property(e => e.CustomerCardNumber).HasColumnType("decimal(16, 0)");
+
+                entity.Property(e => e.CustomerFirstName)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PizzaPrice).HasColumnType("decimal(4, 2)");
-
-                entity.Property(e => e.PizzaSize)
+                entity.Property(e => e.CustomerLastName)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PizzaToppings)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.CustomerPhone).HasColumnType("decimal(10, 0)");
 
-                entity.Property(e => e.PizzaType)
+                entity.Property(e => e.Password)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Store)
+                entity.Property(e => e.Username)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<PizzaSizePrice>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("Order");
 
-                entity.ToTable("PizzaSizePrice");
+                entity.Property(e => e.OrderId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("OrderID");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(3, 2)");
+                entity.Property(e => e.Cost).HasColumnType("smallmoney");
 
-                entity.Property(e => e.Size)
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.OrderDate).HasColumnType("datetime");
+
+                entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK__Order__CustomerI__2739D489");
+
+                entity.HasOne(d => d.Store)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.StoreId)
+                    .HasConstraintName("FK__Order__StoreID__282DF8C2");
+            });
+
+            modelBuilder.Entity<Pizza>(entity =>
+            {
+                entity.ToTable("Pizza");
+
+                entity.Property(e => e.PizzaId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("PizzaID");
+
+                entity.Property(e => e.CrustId).HasColumnName("CrustID");
+
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+                entity.Property(e => e.PizzaPrice).HasColumnType("smallmoney");
+
+                entity.Property(e => e.PizzaSizeId).HasColumnName("PizzaSizeID");
+
+                entity.HasOne(d => d.Crust)
+                    .WithMany(p => p.Pizzas)
+                    .HasForeignKey(d => d.CrustId)
+                    .HasConstraintName("FK__Pizza__CrustID__32AB8735");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.Pizzas)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK__Pizza__OrderID__31B762FC");
+
+                entity.HasOne(d => d.PizzaSize)
+                    .WithMany(p => p.Pizzas)
+                    .HasForeignKey(d => d.PizzaSizeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Pizza__PizzaSize__339FAB6E");
+            });
+
+            modelBuilder.Entity<PizzaSize>(entity =>
+            {
+                entity.ToTable("PizzaSize");
+
+                entity.HasIndex(e => e.PizzaSizeName, "UQ__PizzaSiz__F84F0608919357E8")
+                    .IsUnique();
+
+                entity.Property(e => e.PizzaSizeId).HasColumnName("PizzaSizeID");
+
+                entity.Property(e => e.PizzaSizeName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.SizeId).HasColumnName("SizeID");
+                entity.Property(e => e.PizzaSizePrice).HasColumnType("smallmoney");
             });
 
             modelBuilder.Entity<PizzaTopping>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("PizzaTopping");
 
-                entity.Property(e => e.Toppings)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ToppingsPrice).HasColumnType("decimal(3, 2)");
-            });
-
-            modelBuilder.Entity<PizzaToppingMatching>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("PizzaToppingMatching");
-
-                entity.Property(e => e.Topping)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<PizzaType>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.Property(e => e.BasePrice)
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Pizza)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.PizzaToppingId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("PizzaToppingID");
 
                 entity.Property(e => e.PizzaId).HasColumnName("PizzaID");
+
+                entity.Property(e => e.ToppingId).HasColumnName("ToppingID");
+
+                entity.HasOne(d => d.Pizza)
+                    .WithMany(p => p.PizzaToppings)
+                    .HasForeignKey(d => d.PizzaId)
+                    .HasConstraintName("FK__PizzaTopp__Pizza__3A4CA8FD");
+
+                entity.HasOne(d => d.Topping)
+                    .WithMany(p => p.PizzaToppings)
+                    .HasForeignKey(d => d.ToppingId)
+                    .HasConstraintName("FK__PizzaTopp__Toppi__3B40CD36");
             });
 
             modelBuilder.Entity<Store>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("Store");
+
+                entity.HasIndex(e => e.StoreLocation, "UQ__Store__AB9F35EF5ACC35C9")
+                    .IsUnique();
 
                 entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
-                entity.Property(e => e.StoreName)
+                entity.Property(e => e.StoreLocation)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Topping>(entity =>
+            {
+                entity.ToTable("Topping");
+
+                entity.HasIndex(e => e.ToppingName, "UQ__Topping__612DF4CD30FA0FD4")
+                    .IsUnique();
+
+                entity.Property(e => e.ToppingId).HasColumnName("ToppingID");
+
+                entity.Property(e => e.ToppingName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.StoreState)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.ToppingPrice).HasColumnType("smallmoney");
             });
 
             OnModelCreatingPartial(modelBuilder);

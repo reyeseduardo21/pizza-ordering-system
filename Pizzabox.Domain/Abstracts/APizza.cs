@@ -16,7 +16,9 @@ namespace PizzaBox.Domain.Abstracts
     {
         //XmlIgnoreAttribute();
         public string Crust { get; set; }
+        public byte CrustId { get; set; }
         public string Size { get; set; }
+        public byte SizeId { get; set; }
         public List<Toppings> Toppings { get; set; }
 
         public string Name { get; set; }
@@ -25,7 +27,7 @@ namespace PizzaBox.Domain.Abstracts
 
         public int PizzaId { get; set; }
 
-        public int PizzaLogId { get; set; }
+        public int OrderId { get; set; }
 
 
 

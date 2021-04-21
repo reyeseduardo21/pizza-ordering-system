@@ -7,8 +7,14 @@ namespace PizzaBox.Data.Entity
 {
     public partial class Store
     {
-        public string StoreName { get; set; }
-        public string StoreState { get; set; }
-        public int? StoreId { get; set; }
+        public Store()
+        {
+            Orders = new HashSet<Order>();
+        }
+
+        public byte StoreId { get; set; }
+        public string StoreLocation { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

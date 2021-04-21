@@ -21,21 +21,21 @@ namespace PizzaBox.Data
         }
 
 
-        public void addPizza(CustomPizza pizza)
-        {
-            context.Add(mapper.Map(pizza));
-            context.SaveChanges();
-        }
+        // public void addPizza(CustomPizza pizza)
+        // {
+        //     context.Add(mapper.Map(pizza));
+        //     context.SaveChanges();
+        // }
 
         public List<CustomPizza> GetAllPizzas()
         {
-            var pizza = context.PizzaTypes;
+            var pizza = context.Pizzas;
             return pizza.Select(mapper.Map).ToList();
         }
 
         public List<Customer> GetUserAndPass()
         {
-            var info = context.CustomerLogins;
+            var info = context.Customers;
             return info.Select(mapper.Map).ToList();
         }
 
@@ -59,32 +59,32 @@ namespace PizzaBox.Data
 
         public CustomPizza GetPizzaByIndex(int Id)
         {
-            var pizza = context.PizzaTypes.Where(x => x.PizzaId == Id).FirstOrDefault();
+            var pizza = context.Pizzas.Where(x => x.PizzaId == Id).FirstOrDefault();
 
             return mapper.Map(pizza);
         }
 
         public List<Crust> GetPizzaCrusts()
         {
-            var crusts = context.PizzaCrusts;
+            var crusts = context.Crusts;
             return crusts.Select(mapper.Map).ToList();
         }
 
         public Crust GetCrustByIndex(int Id)
         {
-            var crust = context.PizzaCrusts.Where(x => x.CrustId == Id).FirstOrDefault();
+            var crust = context.Crusts.Where(x => x.CrustId == Id).FirstOrDefault();
             return mapper.Map(crust);
         }
 
         public List<Size> GetSizes()
         {
-            var sizes = context.PizzaSizePrices;
+            var sizes = context.PizzaSizes;
             return sizes.Select(mapper.Map).ToList();
         }
 
         public Size GetSizeByIndex(int Id)
         {
-            var size = context.PizzaSizePrices.Where(x => x.SizeId == Id).FirstOrDefault();
+            var size = context.PizzaSizes.Where(x => x.PizzaSizeId == Id).FirstOrDefault();
             return mapper.Map(size);
         }
 
@@ -96,9 +96,28 @@ namespace PizzaBox.Data
 
         public Toppings GetToppingByIndex(int Id)
         {
-            var topping = context.PizzaToppings.Where(x => x.ToppingsId == Id).FirstOrDefault();
+            var topping = context.PizzaToppings.Where(x => x.PizzaToppingId == Id).FirstOrDefault();
             return mapper.Map(topping);
         }
+
+        // public bool AddOrderToDb(Order order)
+        // {
+
+
+        //     try
+        //     {
+        //         context.Add(mapper.Map(order));
+        //         context.SaveChanges();
+        //         return true;
+        //     }
+        //     catch
+        //     {
+        //         return false;
+        //     }
+
+
+
+        // }
     }
 
 }

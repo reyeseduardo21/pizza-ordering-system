@@ -45,7 +45,7 @@ namespace PizzaBox.Client
 
 
             Console.WriteLine("Welcome to PizzaBox!");
-            Order PizzaOrder = new Order();
+            MOrder PizzaOrder = new MOrder();
 
             PizzaOrder.Customer.username = UserLogin();
             Console.WriteLine($"{PizzaOrder.Customer.username}");
@@ -76,15 +76,21 @@ namespace PizzaBox.Client
 
             Console.WriteLine($"Total cost is: {PizzaOrder.Cost}");
 
-            //UploadToDb();
+            IRepository repository = Dependencies.CreateRepository();
+
+            // foreach (var item in PizzaOrder.ListOfPizzas)
+            // {
+            //     repository.AddOrderToDb(item);
+            // }
+
 
 
 
         }
 
-        private static void UploadToDb()
+        private static void UploadToDb(MOrder order)
         {
-            throw new NotImplementedException();
+
         }
 
         /// <summary>
@@ -196,18 +202,18 @@ namespace PizzaBox.Client
             var StoreLocation = repository.GetStores();
             foreach (var item in StoreLocation)
             {
-                Console.WriteLine($"{item.StoreID} - {item.StoreName}, {item.StoreLocation}");
+                Console.WriteLine($"{item.StoreID} - {item.StoreID}, {item.StoreLocation}");
 
             }
 
 
 
         }
-        static List<PizzaType> getPizzaOrder()
+        static List<Pizza> getPizzaOrder()
         {
             // this will create a session between db and the .net app
             PizzaBoxInformationContext context = new PizzaBoxInformationContext();
-            var Pizza_order = context.PizzaTypes.ToList();
+            var Pizza_order = context.Pizzas.ToList();
             return Pizza_order;
 
         }
@@ -220,7 +226,7 @@ namespace PizzaBox.Client
 
             foreach (var item in sizes)
             {
-                Console.WriteLine($"{item.Id} - {item.Name}, {item.Price}");
+                Console.WriteLine($"{item.Id} - {item.Name}, ${item.Price}");
 
             }
         }
@@ -241,14 +247,14 @@ namespace PizzaBox.Client
         /// 
         /// </summary>
         /// <returns></returns>
-        private static void SelectStore(Order order)
+        private static void SelectStore(MOrder order)
         {
             DisplayStoreMenu();
             var StoreLocation = Console.ReadLine();
             IRepository repository = Dependencies.CreateRepository();
             var holder = repository.GetStoreByIndex(int.Parse(StoreLocation));
 
-            order.Store.StoreName = holder.StoreName;
+            order.Store.StoreLocation = holder.StoreLocation;
             order.Store.StoreLocation = holder.StoreLocation;
             order.Store.StoreID = holder.StoreID;
 
@@ -261,11 +267,11 @@ namespace PizzaBox.Client
         /// 
         /// </summary>
         /// <returns></returns>
-        private static void SelectPizza(Order order)
+        private static void SelectPizza(MOrder order)
         {
 
             Boolean MorePizza = false;
-            int count = 1;
+            int count = 0;
 
 
             do
@@ -275,10 +281,10 @@ namespace PizzaBox.Client
                 var PizzaSelect = Console.ReadLine();
                 IRepository repository = Dependencies.CreateRepository();
                 var holder = repository.GetPizzaByIndex(int.Parse(PizzaSelect));
-                holder.PizzaLogId = count;
+                holder.OrderId = count;
 
                 Pizza.Name = holder.Name;
-                Pizza.PizzaLogId = count;
+                Pizza.OrderId = count;
                 Toppings topping;
 
                 switch (holder.PizzaId)
@@ -367,12 +373,12 @@ namespace PizzaBox.Client
 
                 Pizza.PizzaPrice += holder.PizzaPrice;
 
-                order.Cost += holder.PizzaPrice;
+                //order.Cost += holder.PizzaPrice;
 
                 SelectCrust(order, Pizza);
                 SelectSize(order, Pizza);
                 SelectToppings(order, Pizza);
-                order.ListOfPizzas.Add(Pizza);
+                //order.ListOfPizzas.Add(Pizza);
 
                 Console.WriteLine($"How many of this {Pizza.Name} would you like?");
                 var number = Console.ReadLine();
@@ -382,7 +388,7 @@ namespace PizzaBox.Client
                     if (order.Cost <= 250 && count != 50)
                     {
                         count++;
-                        Pizza.PizzaLogId = count;
+                        Pizza.OrderId = count;
                         order.ListOfPizzas.Add(Pizza);
                         order.Cost += Pizza.PizzaPrice;
                     }
@@ -428,7 +434,7 @@ namespace PizzaBox.Client
 
         }
 
-        private static void SelectToppings(Order order, CustomPizza pizza)
+        private static void SelectToppings(MOrder order, CustomPizza pizza)
         {
 
             //Boolean MoreToppings = false;
@@ -445,7 +451,7 @@ namespace PizzaBox.Client
                 {
                     Name = holder.Name,
                     Price = holder.Price,
-                    PizzaLogId = pizza.PizzaLogId,
+
                     Id = holder.Id
                 };
                 pizza.AddToppings(topping);
@@ -465,7 +471,7 @@ namespace PizzaBox.Client
 
 
 
-        private static void SelectCrust(Order order, CustomPizza pizza)
+        private static void SelectCrust(MOrder order, CustomPizza pizza)
         {
             DisplayCrustTypes();
 
@@ -491,7 +497,7 @@ namespace PizzaBox.Client
 
         }
 
-        private static void SelectSize(Order order, CustomPizza pizza)
+        private static void SelectSize(MOrder order, CustomPizza pizza)
         {
             DisplayPizzaSize();
             var SizeSelect = Console.ReadLine();
@@ -556,7 +562,3 @@ namespace PizzaBox.Client
         }
     }
 }
-
-
-
-

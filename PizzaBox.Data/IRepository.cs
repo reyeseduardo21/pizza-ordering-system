@@ -7,7 +7,7 @@ namespace PizzaBox.Data
 {
     public interface IRepository
     {
-        void addPizza(PizzaBox.Domain.Models.CustomPizza pizza);
+        //void addPizza(PizzaBox.Domain.Models.CustomPizza pizza);
 
         List<CustomPizza> GetAllPizzas();
 
@@ -32,6 +32,8 @@ namespace PizzaBox.Data
         List<Toppings> GetToppings();
 
         Toppings GetToppingByIndex(int Id);
+
+        //bool AddOrderToDb(MOrder order);
 
 
     }
