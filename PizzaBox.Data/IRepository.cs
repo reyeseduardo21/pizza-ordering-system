@@ -16,6 +16,7 @@ namespace PizzaBox.Data
         List<MCustomer> GetCustomers();
 
         void AddCustomer(MCustomer customer);
+        void AddOrder(MOrder order);
 
         //PizzaBox.Domain.Abstracts.APizza GetPizza(string PizzaChoice);
 

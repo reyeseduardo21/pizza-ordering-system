@@ -4,13 +4,16 @@ namespace PizzaBox.Domain.Models
 {
     public class Toppings : AComponent
     {
-        public int PizzaToppingID;
+        public int PizzaToppingID = 0;
 
-        public int PizzaID;
+        public int PizzaID = 0;
 
-        public byte ToppingID;
+
         public Toppings()
         {
+            Name = "null";
+            Price = 0;
+            Id = 0;
 
 
 

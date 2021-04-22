@@ -51,9 +51,6 @@ namespace PizzaBox.Data
                 PizzaId = pizza.PizzaId,
                 PizzaPrice = pizza.PizzaPrice,
 
-
-
-
             };
         }
 
@@ -93,9 +90,21 @@ namespace PizzaBox.Data
         {
             return new PizzaBox.Domain.Models.Toppings
             {
-                PizzaID = (int)topping.PizzaId,
-                PizzaToppingID = topping.PizzaToppingId,
-                ToppingID = (byte)topping.ToppingId
+                PizzaID = topping.PizzaToppingId,
+                Id = topping.Topping.ToppingId,
+                Name = topping.Topping.ToppingName,
+                Price = topping.Topping.ToppingPrice
+
+            };
+        }
+
+        public PizzaBox.Domain.Models.Toppings Map(Entity.Topping topping)
+        {
+            return new PizzaBox.Domain.Models.Toppings
+            {
+                Id = topping.ToppingId,
+                Name = topping.ToppingName,
+                Price = topping.ToppingPrice
             };
         }
 
@@ -113,6 +122,16 @@ namespace PizzaBox.Data
                 CardExpDate = customer.CustomerCardDate,
                 CardCode = customer.CustomerCardCvv,
                 CustomerID = customer.CustomerId
+            };
+        }
+
+        public PizzaBox.Domain.Models.CustomPizza Map(PizzaBox.Data.Entity.Specialty pizza)
+        {
+            return new Domain.Models.CustomPizza
+            {
+                Name = pizza.PizzaName,
+                PizzaPrice = pizza.PizzaPrice,
+                PizzaId = pizza.SpecialtyId
             };
         }
 

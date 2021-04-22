@@ -30,7 +30,7 @@ namespace PizzaBox.Data
 
         public List<CustomPizza> GetAllPizzas()
         {
-            var pizza = context.Pizzas;
+            var pizza = context.Specialties;
             return pizza.Select(mapper.Map).ToList();
         }
 
@@ -44,6 +44,12 @@ namespace PizzaBox.Data
         public void AddCustomer(MCustomer customer)
         {
             context.Add(mapper.Map(customer));
+            context.SaveChanges();
+        }
+
+        public void AddOrder(MOrder order)
+        {
+            context.Add(mapper.Map(order));
             context.SaveChanges();
         }
 
@@ -73,7 +79,7 @@ namespace PizzaBox.Data
 
         public CustomPizza GetPizzaByIndex(int Id)
         {
-            var pizza = context.Pizzas.Where(x => x.PizzaId == Id).FirstOrDefault();
+            var pizza = context.Specialties.Where(x => x.SpecialtyId == Id).FirstOrDefault();
 
             return mapper.Map(pizza);
         }
@@ -104,13 +110,13 @@ namespace PizzaBox.Data
 
         public List<Toppings> GetToppings()
         {
-            var toppings = context.PizzaToppings;
+            var toppings = context.Toppings;
             return toppings.Select(mapper.Map).ToList();
         }
 
         public Toppings GetToppingByIndex(int Id)
         {
-            var topping = context.PizzaToppings.Where(x => x.PizzaToppingId == Id).FirstOrDefault();
+            var topping = context.Toppings.Where(x => x.ToppingId == Id).FirstOrDefault();
             return mapper.Map(topping);
         }
 

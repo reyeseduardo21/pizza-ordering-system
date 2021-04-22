@@ -79,6 +79,8 @@ namespace PizzaBox.Client
             SelectPizza(PizzaOrder);
             DisplayOrder(PizzaOrder);
 
+            //repository.AddOrder(PizzaOrder);
+
 
         }
 
@@ -359,7 +361,12 @@ namespace PizzaBox.Client
             int i = 0;
             foreach (CustomPizza item in order.ListOfPizzas)
             {
-                Console.WriteLine($"\n{item.Size} {item.Toppings} {item.Name}");
+                Console.Write($"\n{item.Size} ");
+                foreach (Toppings topping in item.Toppings)
+                {
+                    Console.Write($"{topping.Name} ");
+                }
+                Console.Write($"{item.Crust} crust {item.Name} ");
                 i++;
 
             }
@@ -389,12 +396,13 @@ namespace PizzaBox.Client
             Console.WriteLine("\nPlease select a Pizza:");
 
             var pizzas = repository.GetAllPizzas();
-
+            int count = 0;
             foreach (var item in pizzas)
             {
                 Console.WriteLine($"{item.PizzaId} - {item.Name}  ${item.PizzaPrice}");
-
+                count++;
             }
+            Console.WriteLine($"{count + 1} - CustomPizza $5.99");
         }
 
         /// <summary>
@@ -485,7 +493,7 @@ namespace PizzaBox.Client
                 IRepository repository = Dependencies.CreateRepository();
                 var holder = repository.GetPizzaByIndex(int.Parse(PizzaSelect));
                 holder.OrderId = count;
-
+                //Pizza = repository.GetPizzaByIndex(int.Parse(PizzaSelect));
                 Pizza.Name = holder.Name;
                 Pizza.OrderId = count;
                 Toppings topping;
@@ -498,38 +506,25 @@ namespace PizzaBox.Client
                         topping = new Toppings
                         {
                             Name = "Pepperoni",
-                            Price = 0,
-                            Id = 1
+                            Price = 1,
+                            Id = 4
                         };
                         Pizza.Toppings.Add(topping);
                         topping = new Toppings
                         {
                             Name = "Sausage",
                             Price = 1,
-                            Id = 2
+                            Id = 6
                         };
                         Pizza.Toppings.Add(topping);
                         topping = new Toppings
                         {
                             Name = "Chicken",
-                            Price = 1.5M,
-                            Id = 4
+                            Price = 1,
+                            Id = 3
                         };
                         Pizza.Toppings.Add(topping);
-                        topping = new Toppings
-                        {
-                            Name = "Cheese",
-                            Price = 0,
-                            Id = 5
-                        };
-                        Pizza.Toppings.Add(topping);
-                        topping = new Toppings
-                        {
-                            Name = "Tomato Sauce",
-                            Price = 0,
-                            Id = 6
-                        };
-                        Pizza.Toppings.Add(topping);
+
                         break;
                     case 3:
                         topping = new Toppings
@@ -545,31 +540,27 @@ namespace PizzaBox.Client
                         topping = new Toppings
                         {
                             Name = "Broccoli",
-                            Price = 1,
-                            Id = 2
+                            Price = 0.75M,
+                            Id = 20
                         };
                         Pizza.Toppings.Add(topping);
                         topping = new Toppings
                         {
                             Name = "Olives",
-                            Price = 1.5M,
-                            Id = 4
+                            Price = 0.75M,
+                            Id = 12
                         };
                         Pizza.Toppings.Add(topping);
+
                         topping = new Toppings
                         {
-                            Name = "Cheese",
-                            Price = 0,
-                            Id = 5
+                            Name = "Tomato",
+                            Price = 0.75M,
+                            Id = 18
                         };
                         Pizza.Toppings.Add(topping);
-                        topping = new Toppings
-                        {
-                            Name = "Tomato Sauce",
-                            Price = 0,
-                            Id = 6
-                        };
-                        Pizza.Toppings.Add(topping);
+                        break;
+                    default:
                         break;
 
                 }
@@ -581,7 +572,7 @@ namespace PizzaBox.Client
                 SelectCrust(order, Pizza);
                 SelectSize(order, Pizza);
                 SelectToppings(order, Pizza);
-                //order.ListOfPizzas.Add(Pizza);
+
 
                 Console.WriteLine($"How many of this {Pizza.Name} would you like?");
                 var number = Console.ReadLine();
@@ -658,9 +649,9 @@ namespace PizzaBox.Client
                     Id = holder.Id
                 };
                 pizza.AddToppings(topping);
-
-                order.ListOfToppings.Add(holder);
-                order.Cost += holder.Price;
+                pizza.PizzaPrice += topping.Price;
+                //order.ListOfToppings.Add(holder);
+                //order.Cost += holder.Price;
             }
 
 
@@ -686,7 +677,7 @@ namespace PizzaBox.Client
             pizza.PizzaPrice += holder.Price;
 
 
-            order.Cost += holder.Price;
+            //order.Cost += holder.Price;
 
 
 
@@ -714,7 +705,7 @@ namespace PizzaBox.Client
             // {
             //     Console.WriteLine($"{item.Name} {item.Price}");
             // }
-            order.Cost += holder.Price;
+            //order.Cost += holder.Price;
 
 
 

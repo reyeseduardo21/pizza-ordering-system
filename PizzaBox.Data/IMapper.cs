@@ -21,6 +21,10 @@ namespace PizzaBox.Data
 
         PizzaBox.Domain.Models.Toppings Map(PizzaBox.Data.Entity.PizzaTopping topping);
 
+        PizzaBox.Domain.Models.CustomPizza Map(PizzaBox.Data.Entity.Specialty pizza);
+
+        PizzaBox.Domain.Models.Toppings Map(Entity.Topping topping);
+
         PizzaBox.Data.Entity.Order Map(PizzaBox.Domain.Models.MOrder order);
 
         PizzaBox.Data.Entity.Customer Map(PizzaBox.Domain.Models.MCustomer customer);

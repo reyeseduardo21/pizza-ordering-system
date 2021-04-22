@@ -23,6 +23,7 @@ namespace PizzaBox.Data.Entity
         public virtual DbSet<Pizza> Pizzas { get; set; }
         public virtual DbSet<PizzaSize> PizzaSizes { get; set; }
         public virtual DbSet<PizzaTopping> PizzaToppings { get; set; }
+        public virtual DbSet<Specialty> Specialties { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<Topping> Toppings { get; set; }
 
@@ -194,6 +195,20 @@ namespace PizzaBox.Data.Entity
                     .WithMany(p => p.PizzaToppings)
                     .HasForeignKey(d => d.ToppingId)
                     .HasConstraintName("FK__PizzaTopp__Toppi__3B40CD36");
+            });
+
+            modelBuilder.Entity<Specialty>(entity =>
+            {
+                entity.HasKey(e => e.PizzaName)
+                    .HasName("PK__Specialt__401E473EDA60ACBD");
+
+                entity.Property(e => e.PizzaName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PizzaPrice).HasColumnType("decimal(4, 2)");
+
+                entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
             });
 
             modelBuilder.Entity<Store>(entity =>
