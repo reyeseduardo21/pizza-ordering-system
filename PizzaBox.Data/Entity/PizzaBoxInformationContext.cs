@@ -53,7 +53,7 @@ namespace PizzaBox.Data.Entity
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CrustPrice).HasColumnType("smallmoney");
+                entity.Property(e => e.CrustPrice).HasColumnType("decimal(3, 2)");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -171,7 +171,7 @@ namespace PizzaBox.Data.Entity
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PizzaSizePrice).HasColumnType("smallmoney");
+                entity.Property(e => e.PizzaSizePrice).HasColumnType("decimal(3, 2)");
             });
 
             modelBuilder.Entity<PizzaTopping>(entity =>
@@ -238,7 +238,7 @@ namespace PizzaBox.Data.Entity
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ToppingPrice).HasColumnType("smallmoney");
+                entity.Property(e => e.ToppingPrice).HasColumnType("decimal(3, 2)");
             });
 
             OnModelCreatingPartial(modelBuilder);
