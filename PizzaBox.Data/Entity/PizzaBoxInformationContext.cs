@@ -144,6 +144,7 @@ namespace PizzaBox.Data.Entity
                 entity.HasOne(d => d.Crust)
                     .WithMany(p => p.Pizzas)
                     .HasForeignKey(d => d.CrustId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Pizza__CrustID__32AB8735");
 
                 entity.HasOne(d => d.Order)

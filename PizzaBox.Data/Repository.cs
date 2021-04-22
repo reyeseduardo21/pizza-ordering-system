@@ -50,7 +50,30 @@ namespace PizzaBox.Data
         public void AddOrder(MOrder order)
         {
             context.Add(mapper.Map(order));
+            AddPizza(order);
+            AddToppings(order);
             context.SaveChanges();
+        }
+
+        public void AddPizza(MOrder order)
+        {
+
+            foreach (CustomPizza pizza in order.ListOfPizzas)
+            {
+                context.Add(mapper.Map(pizza));
+
+            }
+            //context.SaveChanges();
+
+        }
+
+        public void AddToppings(MOrder order)
+        {
+            foreach (Toppings item in order.ListOfToppings)
+            {
+                context.Add(mapper.Map(item));
+            }
+            //context.SaveChanges();
         }
 
         public List<MCustomer> GetUserAndPass()
@@ -120,24 +143,11 @@ namespace PizzaBox.Data
             return mapper.Map(topping);
         }
 
-        // public bool AddOrderToDb(Order order)
-        // {
-
-
-        //     try
-        //     {
-        //         context.Add(mapper.Map(order));
-        //         context.SaveChanges();
-        //         return true;
-        //     }
-        //     catch
-        //     {
-        //         return false;
-        //     }
-
-
-
-        // }
+        public int GetOrderCount()
+        {
+            int count = context.Orders.Count();
+            return count;
+        }
     }
 
 }

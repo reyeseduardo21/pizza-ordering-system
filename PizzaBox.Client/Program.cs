@@ -79,7 +79,11 @@ namespace PizzaBox.Client
             SelectPizza(PizzaOrder);
             DisplayOrder(PizzaOrder);
 
-            //repository.AddOrder(PizzaOrder);
+            int orderCount = repository.GetOrderCount();
+
+            PizzaOrder.OrderID = orderCount + 1;
+
+            repository.AddOrder(PizzaOrder);
 
 
         }

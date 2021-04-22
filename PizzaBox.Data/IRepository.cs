@@ -18,6 +18,8 @@ namespace PizzaBox.Data
         void AddCustomer(MCustomer customer);
         void AddOrder(MOrder order);
 
+        void AddToppings(MOrder order);
+
         //PizzaBox.Domain.Abstracts.APizza GetPizza(string PizzaChoice);
 
         List<Store> GetStores();
@@ -37,6 +39,8 @@ namespace PizzaBox.Data
         List<Toppings> GetToppings();
 
         Toppings GetToppingByIndex(int Id);
+
+        int GetOrderCount();
 
         //bool AddOrderToDb(MOrder order);
 

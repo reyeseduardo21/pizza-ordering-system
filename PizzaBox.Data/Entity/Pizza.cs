@@ -14,7 +14,7 @@ namespace PizzaBox.Data.Entity
 
         public int PizzaId { get; set; }
         public int? OrderId { get; set; }
-        public byte? CrustId { get; set; }
+        public byte CrustId { get; set; }
         public byte PizzaSizeId { get; set; }
         public decimal PizzaPrice { get; set; }
 

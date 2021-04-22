@@ -161,24 +161,8 @@ namespace PizzaBox.Data
                 StoreId = order.Store.StoreID,
                 Cost = order.Cost,
                 OrderDate = System.DateTime.Now,
-                Customer = new Customer
-                {
-                    Username = order.Customer.username,
-                    Password = order.Customer.password,
-                    CustomerFirstName = order.Customer.FirstName,
-                    CustomerLastName = order.Customer.LastName,
-                    CustomerPhone = order.Customer.PhoneNumber,
-                    CustomerAddress = order.Customer.Address,
-                    CustomerCardNumber = order.Customer.CardNumber,
-                    CustomerCardDate = order.Customer.CardExpDate,
-                    CustomerCardCvv = order.Customer.CardCode
-                },
-                Store = new Store
-                {
-                    StoreId = order.Store.StoreID,
-                    StoreLocation = order.Store.StoreLocation
-                },
-                Pizzas = (ICollection<Pizza>)order.ListOfPizzas
+
+
 
             };
         }
@@ -194,19 +178,19 @@ namespace PizzaBox.Data
                 OrderId = pizza.OrderId,
                 CrustId = pizza.CrustId,
                 PizzaSizeId = pizza.SizeId,
-                PizzaPrice = pizza.PizzaPrice,
-                Crust = new Crust
-                {
-                    CrustId = pizza.CrustId,
-                    CrustName = pizza.Crust
-                },
-                PizzaSize = new PizzaSize
-                {
-                    PizzaSizeId = pizza.SizeId,
-                    PizzaSizeName = pizza.Size,
+                PizzaPrice = pizza.PizzaPrice
 
-                }
 
+            };
+        }
+
+        public PizzaBox.Data.Entity.Topping Map(PizzaBox.Domain.Models.Toppings toppings)
+        {
+            return new PizzaBox.Data.Entity.Topping
+            {
+                ToppingName = toppings.Name,
+                ToppingPrice = toppings.Price,
+                ToppingId = (byte)toppings.Id
 
             };
         }
