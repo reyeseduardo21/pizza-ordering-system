@@ -5,7 +5,8 @@ namespace PizzaBox.Domain.Models
 {
     public class CustomPizza : APizza
     {
-
+        public int TotalOrderedPizzas = 0;
+        public int SpecialtyId = 0;
 
 
         public CustomPizza()
@@ -14,6 +15,7 @@ namespace PizzaBox.Domain.Models
             Toppings = new List<Toppings>();
             OrderId = 0;
             Size = "null";
+            PizzaId = 0;
 
 
 

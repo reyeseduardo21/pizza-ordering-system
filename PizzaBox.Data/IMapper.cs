@@ -31,7 +31,7 @@ namespace PizzaBox.Data
 
         PizzaBox.Data.Entity.Pizza Map(PizzaBox.Domain.Models.CustomPizza pizza);
 
-        PizzaBox.Data.Entity.Topping Map(PizzaBox.Domain.Models.Toppings toppings);
+        PizzaBox.Data.Entity.PizzaTopping Map(PizzaBox.Domain.Models.Toppings toppings);
 
         //PizzaBox.Data.Entity.Order Map(PizzaBox.Domain.Models.CustomPizza pizza);
 

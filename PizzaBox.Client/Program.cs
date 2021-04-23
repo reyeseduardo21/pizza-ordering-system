@@ -45,6 +45,7 @@ namespace PizzaBox.Client
             IRepository repository = Dependencies.CreateRepository();
             MCustomer CurrentCustomer;
             MOrder PizzaOrder = new MOrder();
+            PizzaOrder.OrderID = repository.GetOrderCount() + 1;
             Console.WriteLine("Welcome to PizzaBox!");
 
             Console.WriteLine("Are you a new or returning customer?\n1 - New customer (create new login)\n2 - Returning (sign in)\n3 - Sign in as Guest");
@@ -79,12 +80,25 @@ namespace PizzaBox.Client
             SelectPizza(PizzaOrder);
             DisplayOrder(PizzaOrder);
 
-            int orderCount = repository.GetOrderCount();
 
-            PizzaOrder.OrderID = orderCount + 1;
+            // CustomPizza test = PizzaOrder.ListOfPizzas.First();
 
+
+            //Console.WriteLine(PizzaOrder.OrderID);
             repository.AddOrder(PizzaOrder);
+            int count = repository.GetPizzaCount();
+            int toppingscount;
+            foreach (CustomPizza item in PizzaOrder.ListOfPizzas)
+            {
+                //int i = 0;
+                toppingscount = repository.GetPizzaToppingCount();
+                item.OrderId = PizzaOrder.OrderID;
+                item.PizzaId = count + 1;
+                item.PizzaId = repository.GetPizzaCount() + 1;
+                repository.AddPizza(item);
+                Console.WriteLine($"{item.PizzaId} pizza added");
 
+            }
 
         }
 
@@ -370,7 +384,7 @@ namespace PizzaBox.Client
                 {
                     Console.Write($"{topping.Name} ");
                 }
-                Console.Write($"{item.Crust} crust {item.Name} ");
+                Console.Write($"{item.Crust} crust {item.Name} for ${item.PizzaPrice}");
                 i++;
 
             }
@@ -403,7 +417,7 @@ namespace PizzaBox.Client
             int count = 0;
             foreach (var item in pizzas)
             {
-                Console.WriteLine($"{item.PizzaId} - {item.Name}  ${item.PizzaPrice}");
+                Console.WriteLine($"{item.SpecialtyId} - {item.Name}  ${item.PizzaPrice}");
                 count++;
             }
             Console.WriteLine($"{count + 1} - CustomPizza $5.99");
@@ -484,25 +498,27 @@ namespace PizzaBox.Client
         /// <returns></returns>
         private static void SelectPizza(MOrder order)
         {
-
+            IRepository repository = Dependencies.CreateRepository();
             Boolean MorePizza = false;
             int count = 0;
-
+            int OrderPizzaCount = repository.GetPizzaCount();
+            int trackingcount;
 
             do
             {
                 CustomPizza Pizza = new CustomPizza();
                 DisplayPizzaMenu();
                 var PizzaSelect = Console.ReadLine();
-                IRepository repository = Dependencies.CreateRepository();
+
                 var holder = repository.GetPizzaByIndex(int.Parse(PizzaSelect));
-                holder.OrderId = count;
+                //holder.OrderId = count;
                 //Pizza = repository.GetPizzaByIndex(int.Parse(PizzaSelect));
                 Pizza.Name = holder.Name;
-                Pizza.OrderId = count;
+                //Pizza.PizzaId = OrderPizzaCount;
                 Toppings topping;
 
-                switch (holder.PizzaId)
+
+                switch (holder.SpecialtyId)
                 {
                     case 1:
                         break;
@@ -511,23 +527,41 @@ namespace PizzaBox.Client
                         {
                             Name = "Pepperoni",
                             Price = 1,
-                            Id = 4
+                            Id = 4,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
                         };
+                        //trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
+
+
                         topping = new Toppings
                         {
                             Name = "Sausage",
                             Price = 1,
-                            Id = 6
+                            Id = 6,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
+
                         };
+                        // trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
+
+
                         topping = new Toppings
                         {
                             Name = "Chicken",
                             Price = 1,
-                            Id = 3
+                            Id = 3,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
                         };
+                        //trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
+
 
                         break;
                     case 3:
@@ -535,9 +569,15 @@ namespace PizzaBox.Client
                         {
                             Name = "Pepperoni",
                             Price = 0,
-                            Id = 1
+                            Id = 1,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
                         };
+                        //trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
+
+
                         break;
                     case 4:
 
@@ -545,24 +585,39 @@ namespace PizzaBox.Client
                         {
                             Name = "Broccoli",
                             Price = 0.75M,
-                            Id = 20
+                            Id = 20,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
                         };
+                        //trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
+
+
                         topping = new Toppings
                         {
                             Name = "Olives",
                             Price = 0.75M,
-                            Id = 12
+                            Id = 12,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
                         };
+                        //trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
+
 
                         topping = new Toppings
                         {
                             Name = "Tomato",
                             Price = 0.75M,
-                            Id = 18
+                            Id = 18,
+                            PizzaID = Pizza.PizzaId,
+                            //PizzaToppingID = trackingcount + 1
                         };
+                        //trackingcount++;
                         Pizza.Toppings.Add(topping);
+                        //repository.AddToppings(topping);
                         break;
                     default:
                         break;
@@ -573,21 +628,53 @@ namespace PizzaBox.Client
 
                 //order.Cost += holder.PizzaPrice;
 
+                Pizza.PizzaId = repository.GetOrderCount();
+                //order.ListOfPizzas.Add(Pizza);
                 SelectCrust(order, Pizza);
                 SelectSize(order, Pizza);
                 SelectToppings(order, Pizza);
 
 
+
                 Console.WriteLine($"How many of this {Pizza.Name} would you like?");
                 var number = Console.ReadLine();
+
                 for (int i = 0; i < int.Parse(number); i++)
                 {
 
+                    trackingcount = repository.GetPizzaToppingCount();
+                    Console.WriteLine($"adding pizza {i + 1}");
+                    int j = 1;
                     if (order.Cost <= 250 && count != 50)
                     {
-                        count++;
-                        Pizza.OrderId = count;
+                        // CustomPizza PizzaCopy = new CustomPizza
+                        // {
+                        //     Toppings = Pizza.Toppings,
+                        //     PizzaPrice = Pizza.PizzaPrice,
+                        //     Size = Pizza.Size,
+                        //     SizeId = Pizza.SizeId,
+                        //     SpecialtyId = Pizza.SpecialtyId,
+                        //     Crust = Pizza.Crust,
+                        //     CrustId = Pizza.CrustId,
+                        //     Name = Pizza.Name
+
+                        // };
+                        int track = Pizza.Toppings.Count();
+                        foreach (Toppings top in Pizza.Toppings)
+                        {
+
+                            top.PizzaToppingID = trackingcount + j;
+                            Console.WriteLine($"{top.PizzaToppingID} for loop");
+                            repository.AddToppings(top);
+                            j++;
+                        }
+
+
+                        Pizza.PizzaId = repository.GetPizzaCount() + 1;
+
+
                         order.ListOfPizzas.Add(Pizza);
+
                         order.Cost += Pizza.PizzaPrice;
                     }
                     if (order.Cost >= 250)
@@ -638,6 +725,7 @@ namespace PizzaBox.Client
             //Boolean MoreToppings = false;
             Console.WriteLine("Do you want to add more toppings? (Y/N)");
             var input = Console.ReadLine();
+            // int trackingcount = toppingscount;
             if (input.ToLower() == "y")
             {
                 DisplayToppings();
@@ -645,14 +733,18 @@ namespace PizzaBox.Client
                 var ToppingSelect = Console.ReadLine();
                 IRepository repository = Dependencies.CreateRepository();
                 var holder = repository.GetToppingByIndex(int.Parse(ToppingSelect));
+                int toppingscount = pizza.Toppings.Count();
                 Toppings topping = new Toppings
                 {
                     Name = holder.Name,
                     Price = holder.Price,
-
-                    Id = holder.Id
+                    Id = int.Parse(ToppingSelect),
+                    PizzaID = pizza.PizzaId,
+                    PizzaToppingID = toppingscount
                 };
+                Console.WriteLine($"{topping.PizzaToppingID} selectToppings method");
                 pizza.AddToppings(topping);
+
                 pizza.PizzaPrice += topping.Price;
                 //order.ListOfToppings.Add(holder);
                 //order.Cost += holder.Price;
@@ -678,6 +770,8 @@ namespace PizzaBox.Client
             var holder = repository.GetCrustByIndex(int.Parse(CrustSelect));
 
             pizza.Crust = holder.Name;
+            pizza.CrustId = (byte)holder.Id;
+            Console.WriteLine(pizza.CrustId);
             pizza.PizzaPrice += holder.Price;
 
 
@@ -703,6 +797,7 @@ namespace PizzaBox.Client
             var holder = repository.GetSizeByIndex(int.Parse(SizeSelect));
 
             pizza.Size = holder.Name;
+            pizza.SizeId = (byte)holder.Id;
             pizza.PizzaPrice += holder.Price;
 
             // foreach (var item in order.ListOfSizes)
