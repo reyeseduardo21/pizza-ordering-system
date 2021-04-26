@@ -5,6 +5,14 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBoxAPI", "PizzaBoxAPI\PizzaBoxAPI.csproj", "{206B5618-C485-41BA-80B1-6ED0990D01DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBox.Domain", "PizzaBox.Domain\PizzaBox.Domain.csproj", "{E805F02E-B4B5-4D1E-8083-F41B18642789}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBox.Storing", "PizzaBox.Storing\PizzaBox.Storing.csproj", "{4BDE9A92-789C-48BC-8D69-EAD5EE071DAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBox.Testing", "PizzaBox.Testing\PizzaBox.Testing.csproj", "{515D825F-3D54-4A03-B9B2-BAD04F38AE69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBox.Data", "PizzaBox.Data\PizzaBox.Data.csproj", "{710850B3-9171-49DF-BEB1-72A525FFA92D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +23,22 @@ Global
 		{206B5618-C485-41BA-80B1-6ED0990D01DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{206B5618-C485-41BA-80B1-6ED0990D01DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{206B5618-C485-41BA-80B1-6ED0990D01DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E805F02E-B4B5-4D1E-8083-F41B18642789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E805F02E-B4B5-4D1E-8083-F41B18642789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E805F02E-B4B5-4D1E-8083-F41B18642789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E805F02E-B4B5-4D1E-8083-F41B18642789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BDE9A92-789C-48BC-8D69-EAD5EE071DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDE9A92-789C-48BC-8D69-EAD5EE071DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDE9A92-789C-48BC-8D69-EAD5EE071DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDE9A92-789C-48BC-8D69-EAD5EE071DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{515D825F-3D54-4A03-B9B2-BAD04F38AE69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{515D825F-3D54-4A03-B9B2-BAD04F38AE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{515D825F-3D54-4A03-B9B2-BAD04F38AE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{515D825F-3D54-4A03-B9B2-BAD04F38AE69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{710850B3-9171-49DF-BEB1-72A525FFA92D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{710850B3-9171-49DF-BEB1-72A525FFA92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{710850B3-9171-49DF-BEB1-72A525FFA92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{710850B3-9171-49DF-BEB1-72A525FFA92D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
