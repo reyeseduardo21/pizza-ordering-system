@@ -29,7 +29,6 @@ namespace PizzaBox.Client
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
-
             Run();
         }
 
@@ -96,10 +95,11 @@ namespace PizzaBox.Client
                 item.PizzaId = count + 1;
                 item.PizzaId = repository.GetPizzaCount() + 1;
                 repository.AddPizza(item);
-                Console.WriteLine($"{item.PizzaId} pizza added");
+                //Console.WriteLine($"{item.PizzaId} pizza added");
+
 
             }
-
+            Console.WriteLine("Order placed!");
         }
 
         public static MCustomer GuestLogin()
@@ -643,28 +643,17 @@ namespace PizzaBox.Client
                 {
 
                     trackingcount = repository.GetPizzaToppingCount();
-                    Console.WriteLine($"adding pizza {i + 1}");
+                    //Console.WriteLine($"adding pizza {i + 1}");
                     int j = 1;
                     if (order.Cost <= 250 && count != 50)
                     {
-                        // CustomPizza PizzaCopy = new CustomPizza
-                        // {
-                        //     Toppings = Pizza.Toppings,
-                        //     PizzaPrice = Pizza.PizzaPrice,
-                        //     Size = Pizza.Size,
-                        //     SizeId = Pizza.SizeId,
-                        //     SpecialtyId = Pizza.SpecialtyId,
-                        //     Crust = Pizza.Crust,
-                        //     CrustId = Pizza.CrustId,
-                        //     Name = Pizza.Name
 
-                        // };
                         int track = Pizza.Toppings.Count();
                         foreach (Toppings top in Pizza.Toppings)
                         {
 
                             top.PizzaToppingID = trackingcount + j;
-                            Console.WriteLine($"{top.PizzaToppingID} for loop");
+                            //Console.WriteLine($"{top.PizzaToppingID} for loop");
                             repository.AddToppings(top);
                             j++;
                         }
@@ -742,7 +731,7 @@ namespace PizzaBox.Client
                     PizzaID = pizza.PizzaId,
                     PizzaToppingID = toppingscount
                 };
-                Console.WriteLine($"{topping.PizzaToppingID} selectToppings method");
+                //Console.WriteLine($"{topping.PizzaToppingID} selectToppings method");
                 pizza.AddToppings(topping);
 
                 pizza.PizzaPrice += topping.Price;
@@ -771,7 +760,7 @@ namespace PizzaBox.Client
 
             pizza.Crust = holder.Name;
             pizza.CrustId = (byte)holder.Id;
-            Console.WriteLine(pizza.CrustId);
+            //Console.WriteLine(pizza.CrustId);
             pizza.PizzaPrice += holder.Price;
 
 

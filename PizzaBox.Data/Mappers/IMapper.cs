@@ -7,7 +7,7 @@ namespace PizzaBox.Data
 
     public interface IMapper
     {
-        public PizzaBox.Domain.Models.MOrder Map(Entity.Order pizza);
+        PizzaBox.Domain.Models.MOrder Map(Entity.Order pizza);
 
         PizzaBox.Domain.Models.CustomPizza Map(PizzaBox.Data.Entity.Pizza pizza);
 
