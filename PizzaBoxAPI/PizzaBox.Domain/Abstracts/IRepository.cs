@@ -9,11 +9,13 @@ namespace PizzaBox.Data
     {
         //void addPizza(PizzaBox.Domain.Models.CustomPizza pizza);
 
-        List<CustomPizza> GetAllPizzas();
+        public List<CustomPizza> GetAllPizzas();
 
         List<MCustomer> GetUserAndPass();
 
         List<MCustomer> GetCustomers();
+
+        public List<MOrder> GetAllOrders();
 
         void AddCustomer(MCustomer customer);
         void AddOrder(MOrder order);
@@ -30,9 +32,9 @@ namespace PizzaBox.Data
 
         CustomPizza GetPizzaByIndex(int Id);
 
-        List<Crust> GetPizzaCrusts();
+        List<MCrust> GetPizzaCrusts();
 
-        Crust GetCrustByIndex(int Id);
+        MCrust GetCrustByIndex(int Id);
 
         List<Size> GetSizes();
 
@@ -47,6 +49,10 @@ namespace PizzaBox.Data
         int GetPizzaCount();
 
         int GetPizzaToppingCount();
+        public List<CustomPizza> GetPizzasOrders();
+
+        public MCustomer GetCustomerById(int Id);
+        MOrder GetOrdersById(int id);
 
         //bool AddOrderToDb(MOrder order);
 

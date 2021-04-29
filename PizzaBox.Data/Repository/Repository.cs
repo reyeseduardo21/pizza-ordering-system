@@ -37,7 +37,8 @@ namespace PizzaBox.Data
 
         public void AddCustomer(MCustomer customer)
         {
-            context.Add(mapper.Map(customer));
+            var map = mapper.Map(customer);
+            context.Add(map);
             context.SaveChanges();
         }
 
@@ -135,6 +136,12 @@ namespace PizzaBox.Data
         {
             int count = context.Orders.Count();
             return count;
+        }
+
+        public MOrder GetOrdersById(int id)
+        {
+            var order = context.Orders.Where(x => x.OrderId == id).FirstOrDefault();
+            return mapper.Map(order);
         }
 
         public int GetPizzaCount()

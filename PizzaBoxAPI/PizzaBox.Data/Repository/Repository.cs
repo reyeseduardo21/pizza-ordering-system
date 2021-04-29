@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System;
 
+
 namespace PizzaBox.Data
 {
     public class Repository : IRepository
@@ -28,11 +29,29 @@ namespace PizzaBox.Data
             return pizza.Select(mapper.Map).ToList();
         }
 
+        public List<MOrder> GetAllOrders()
+        {
+            var orders = context.Orders;
+            return orders.Select(mapper.Map).ToList();
+        }
+
+        public MOrder GetOrdersById(int id)
+        {
+            var order = context.Orders.Where(x => x.OrderId == id).FirstOrDefault();
+            return mapper.Map(order);
+        }
+
         public List<MCustomer> GetCustomers()
         {
             var customers = context.Customers;
             Console.WriteLine(customers);
             return customers.Select(mapper.Map).ToList();
+        }
+
+        public MCustomer GetCustomerById(int Id)
+        {
+            var customer = context.Customers.Where(x => x.CustomerId == Id).FirstOrDefault();
+            return mapper.Map(customer);
         }
 
         public void AddCustomer(MCustomer customer)
@@ -95,13 +114,27 @@ namespace PizzaBox.Data
             return mapper.Map(pizza);
         }
 
-        public List<Crust> GetPizzaCrusts()
+        public List<CustomPizza> GetPizzasOrders()
+        {
+            var pizzas = context.Pizzas;
+            return pizzas.Select(mapper.Map).ToList();
+        }
+
+        //public List<CustomPizza> GetPizzasByOrderId(int Id)
+        //{
+        //    var pizzas = context.Pizzas.Where(x => x.OrderId == Id).FirstOrDefault();
+        //    return mapper.Map(pizzas);
+        //}
+
+        
+
+        public List<MCrust> GetPizzaCrusts()
         {
             var crusts = context.Crusts;
             return crusts.Select(mapper.Map).ToList();
         }
 
-        public Crust GetCrustByIndex(int Id)
+        public MCrust GetCrustByIndex(int Id)
         {
             var crust = context.Crusts.Where(x => x.CrustId == Id).FirstOrDefault();
             return mapper.Map(crust);
@@ -148,6 +181,8 @@ namespace PizzaBox.Data
             int count = context.PizzaToppings.Count();
             return count;
         }
+
+        
     }
 
 }

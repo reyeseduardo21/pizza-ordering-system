@@ -46,76 +46,14 @@ namespace ApiStart
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "PizzaBox", Version = "v1" });
 			});
 
-			services.AddDbContext<PizzaBox.Data.Entity.PizzaBoxInformationContext>(options =>
-				options.UseSqlServer("Server=tcp:pizzaboxapp-nick.database.windows.net,1433;Initial Catalog=PizzaBoxDB-Nick;User ID=dev;Password=<password>")
-			);
-			//services.AddScoped<IRepository<Crust>, Repository>();
-			//services.AddScoped<IRepository<MCustomer>, Repository>();
-			//services.AddScoped<IRepository<MOrder>, Repository>();
-			//services.AddScoped<IRepository<APizza>, Repository>();
-			//services.AddScoped<IRepository<Size>, Repository>();
-			//services.AddScoped<IRepository<AStore>, Repository>();
-			//services.AddScoped<IRepository<Toppings>, Repository>();
-
-			/*
-			var settings = new JsonSerializerSettings();
-			settings.Converters.Add(JsonSubtypesConverterBuilder
-				.Of<PizzaBox.Domain.Abstracts.ACrust>("CrustType") // type property is only defined here
-				.RegisterSubtype<CheeseStuffedCrust>(CRUST_TYPE.CheeseStuffed)
-				.RegisterSubtype<DeepDishCrust>(CRUST_TYPE.DeepDish)
-				.RegisterSubtype<TraditionalCrust>(CRUST_TYPE.Traditional)
-				.SerializeDiscriminatorProperty() // ask to serialize the type property
-				.Build());
-			*/
-			//services.AddControllers().Add
+            //services.AddDbContext<PizzaBox.Data.Entity.PizzaBoxInformationContext>(options =>
+            //	options.UseSqlServer("Server=tcp:pizzaboxapp-nick.database.windows.net,1433;Initial Catalog=PizzaBoxDB-Nick;User ID=dev;Password=<password>")
+            //);
 
 
-			//services.AddControllers().AddNewtonsoftJson(options =>
-			//{
-			//	options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-			//		.Of<PizzaBox.Domain.Abstracts.ACrust>("CrustType") // type property is only defined here
-			//		.RegisterSubtype<CheeseStuffedCrust>(CRUST_TYPE.CheeseStuffed)
-			//		.RegisterSubtype<DeepDishCrust>(CRUST_TYPE.DeepDish)
-			//		.RegisterSubtype<TraditionalCrust>(CRUST_TYPE.Traditional)
-			//		.SerializeDiscriminatorProperty() // ask to serialize the type property
-			//		.Build());
 
-			//	options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-			//		.Of<APizza>("PizzaType")
-			//		.RegisterSubtype<CustomPizza>(PIZZA_TYPE.Custom)
-			//		.RegisterSubtype<MeatPizza>(PIZZA_TYPE.Meat)
-			//		.RegisterSubtype<VeganPizza>(PIZZA_TYPE.Vegan)
-			//		.SerializeDiscriminatorProperty() // ask to serialize the type property
-			//		.Build());
 
-			//	options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-			//		.Of<ASize>("SizeType")
-			//		.RegisterSubtype<SmallSize>(SIZE_TYPE.Small)
-			//		.RegisterSubtype<MediumSize>(SIZE_TYPE.Medium)
-			//		.RegisterSubtype<LargeSize>(SIZE_TYPE.Large)
-			//		.SerializeDiscriminatorProperty()
-			//		.Build());
-
-			//	options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-			//		.Of<AStore>("StoreType")
-			//		.RegisterSubtype<NewYorkStore>(STORE_TYPE.NewYork)
-			//		.RegisterSubtype<ChicagoStore>(STORE_TYPE.Chicago)
-			//		.SerializeDiscriminatorProperty()
-			//		.Build());
-
-			//	options.SerializerSettings.Converters.Add(JsonSubtypesConverterBuilder
-			//		.Of<ATopping>("ToppingType")
-			//		.RegisterSubtype<BaconTopping>(TOPPING_TYPE.Bacon)
-			//		.RegisterSubtype<MushroomTopping>(TOPPING_TYPE.Mushroom)
-			//		.RegisterSubtype<OnionTopping>(TOPPING_TYPE.Onion)
-			//		.RegisterSubtype<PepperoniTopping>(TOPPING_TYPE.Pepperoni)
-			//		.SerializeDiscriminatorProperty()
-			//		.Build());
-			//}
-			//);
-
-			
-		}
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

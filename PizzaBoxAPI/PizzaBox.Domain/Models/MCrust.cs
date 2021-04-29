@@ -3,11 +3,11 @@ using PizzaBox.Domain.Abstracts;
 
 namespace PizzaBox.Domain.Models
 {
-    public class Crust : AComponent
+    public class MCrust : AComponent
     {
 
 
-        public Crust()
+        public MCrust()
         {
             Name = "null";
             Price = 0;

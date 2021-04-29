@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PizzaBox.Data.Entity;
 using PizzaBox.Domain.Abstracts;
@@ -6,35 +7,21 @@ namespace PizzaBox.Data
 {
     public class Mapper : IMapper
     {
-        public PizzaBox.Domain.Models.MOrder Map(Entity.Order pizza)
+        public PizzaBox.Domain.Models.MOrder Map(Entity.Order order)
         {
 
             return new PizzaBox.Domain.Models.MOrder
             {
-                ListOfPizzas = (List<Domain.Models.CustomPizza>)pizza.Pizzas,
-                Customer = new Domain.Models.MCustomer
-                {
-                    username = pizza.Customer.Username,
-                    password = pizza.Customer.Password,
-                    CustomerID = (int)pizza.CustomerId,
-                    FirstName = pizza.Customer.CustomerFirstName,
-                    LastName = pizza.Customer.CustomerLastName,
-                    PhoneNumber = pizza.Customer.CustomerPhone,
-                    Address = pizza.Customer.CustomerAddress,
-                    CardNumber = pizza.Customer.CustomerCardNumber,
-                    CardCode = pizza.Customer.CustomerCardCvv,
-                    CardExpDate = pizza.Customer.CustomerCardDate
-                },
-                Store = new Domain.Models.Store
-                {
-                    StoreLocation = pizza.Store.StoreLocation,
-                    StoreID = pizza.Store.StoreId
-                },
+                
+                CustomerId = order.CustomerId,
+                StoreId = (int)order.StoreId,
 
-                OrderID = pizza.OrderId,
 
-                Cost = pizza.Cost
+                OrderID = order.OrderId,
 
+                Cost = order.Cost,
+
+                time = (DateTime) order.OrderDate
             };
 
 
@@ -54,6 +41,7 @@ namespace PizzaBox.Data
                 CrustId = pizza.CrustId,
                 SizeId = pizza.PizzaSizeId,
                 PizzaId = pizza.PizzaId
+                
 
             };
         }
@@ -70,9 +58,9 @@ namespace PizzaBox.Data
 
         }
 
-        public PizzaBox.Domain.Models.Crust Map(Entity.Crust crust)
+        public PizzaBox.Domain.Models.MCrust Map(Entity.Crust crust)
         {
-            return new PizzaBox.Domain.Models.Crust
+            return new PizzaBox.Domain.Models.MCrust
             {
                 Name = crust.CrustName,
                 Price = crust.CrustPrice,
@@ -161,12 +149,10 @@ namespace PizzaBox.Data
             return new PizzaBox.Data.Entity.Order
             {
                 OrderId = order.OrderID,
-                CustomerId = order.Customer.CustomerID,
-                StoreId = order.Store.StoreID,
+                CustomerId = order.CustomerId,
+                StoreId = (byte) order.StoreId,
                 Cost = order.Cost,
                 OrderDate = System.DateTime.Now,
-
-
 
             };
         }

@@ -1,4 +1,5 @@
 using PizzaBox.Domain.Abstracts;
+using System;
 using System.Collections.Generic;
 
 namespace PizzaBox.Domain.Models
@@ -11,15 +12,17 @@ namespace PizzaBox.Domain.Models
 
         public int OrderID = 0;
 
-        public Store Store = new Store();
-        public MCustomer Customer = new MCustomer();
+        public int StoreId = 0;
+        public int? CustomerId = 0;
 
 
         public decimal? Cost = 0;
 
-        public List<CustomPizza> ListOfPizzas = new List<CustomPizza>();
+        public HashSet<CustomPizza> ListOfPizzas = new HashSet<CustomPizza>();
 
         public List<Toppings> ListOfToppings = new List<Toppings>();
+
+        public DateTime time = DateTime.Now;
 
 
 

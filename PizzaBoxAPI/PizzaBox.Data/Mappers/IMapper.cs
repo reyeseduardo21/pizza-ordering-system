@@ -15,7 +15,7 @@ namespace PizzaBox.Data
 
         PizzaBox.Domain.Models.Store Map(PizzaBox.Data.Entity.Store store);
 
-        PizzaBox.Domain.Models.Crust Map(PizzaBox.Data.Entity.Crust crust);
+        PizzaBox.Domain.Models.MCrust Map(PizzaBox.Data.Entity.Crust crust);
 
         PizzaBox.Domain.Models.Size Map(PizzaBox.Data.Entity.PizzaSize size);
 

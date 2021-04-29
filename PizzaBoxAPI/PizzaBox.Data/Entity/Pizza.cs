@@ -7,10 +7,7 @@ namespace PizzaBox.Data.Entity
 {
     public partial class Pizza
     {
-        public Pizza()
-        {
-            PizzaToppings = new HashSet<PizzaTopping>();
-        }
+        
 
         public int PizzaId { get; set; }
         public int? OrderId { get; set; }

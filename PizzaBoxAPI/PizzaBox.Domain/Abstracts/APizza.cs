@@ -33,10 +33,7 @@ namespace PizzaBox.Domain.Abstracts
 
 
 
-        public virtual void AddCrust(string CrustType)
-        {
-            Crust = CrustType;
-        }
+        
 
 
         public abstract void AddToppings(Toppings toppings);
